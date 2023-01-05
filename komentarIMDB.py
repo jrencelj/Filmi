@@ -17,6 +17,9 @@ class KomentarIMDB:
         self._se_strinja = se_strinja
         self._se_ne_strinja = se_ne_strinja
         self._ocena = ocena
+    
+
+    # TODO napiši get in set metode z uporabo @property, glej ERD na GOOGLE DRIVE in bazo filmi.db
 
     def shrani_komentar(self):
         '''Shrani IMDB komentar v bazo.'''
