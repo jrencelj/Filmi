@@ -14,7 +14,22 @@ class Vloga_Tip:
             INSERT INTO vloga_tip (sifra, naziv)
             VALUES (?, ?)
             """, [self._sifra, self._naziv])
+    
+    @property
+    def sifra(self):
+        return self._sifra
 
+    @property
+    def naziv(self):
+        return self._naziv
+
+    @property.setter
+    def sifra(self, vrednost):
+        self._sifra = vrednost
+
+    @property.setter
+    def naziv(self, vrednost):
+        self._naziv = vrednost
 
     # TODO Napiši get in set metode za atribute z @property za self._sifra in self._naziv
     
