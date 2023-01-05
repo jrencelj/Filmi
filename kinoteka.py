@@ -20,6 +20,8 @@ class Kinoteka:
             VALUES (?, ?)
             """, [self._ime, self._url])
 
+    # TODO pridobi_kinoteka_id(self), WHERE po 'ime'
+
     def pridobi_filme(self):
         '''Pridobi filme in jih shrani v json datoteko.'''
         kinoteke = {'HBO Max': 'hbo-max',
