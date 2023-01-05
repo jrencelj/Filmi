@@ -17,6 +17,8 @@ class Uporabnik:
         # TODO
         pass
 
+    # TODO pridobi_uporabnik_id(self), WHERE po 'uporabnisko_ime'
+
     @property
     def uporabnisko_ime(self):
         return self._uporabnisko_ime
