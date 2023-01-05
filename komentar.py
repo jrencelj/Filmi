@@ -47,26 +47,26 @@ class Komentar:
     def ura_datum(self):
         return self._ura_datum
 
-    @property.setter
+    @uporabnik.setter
     def uporabnik(self, vrednost):
         self._uporabnik = vrednost
 
-    @property.setter
+    @naslov_komentar.setter
     def naslov_komentar(self, vrednost):
         self._naslov_komentar = vrednost
 
-    @property.setter
+    @besedilo_komentar.setter
     def besedilo_komentar(self, vrednost):
         self._besedilo_komentar = vrednost
 
-    @property.setter
+    @ocena.setter
     def ocena(self, vrednost):
         self._ocena = vrednost
 
-    @property.setter
+    @film.setter
     def film(self, vrednost):
         self._film = vrednost
 
-    @property.setter
+    @ura_datum.setter
     def ura_datum(self, vrednost):
         self._ura_datum = vrednost

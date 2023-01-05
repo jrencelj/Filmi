@@ -74,10 +74,10 @@ class Kinoteka:
     def url(self):
         return self._url
 
-    @property.setter
+    @ime.setter
     def ime(self, vrednost):
         self._ime = vrednost
 
-    @property.setter
+    @url.setter
     def url(self, vrednost):
         self._url = vrednost
