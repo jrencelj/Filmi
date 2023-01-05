@@ -16,6 +16,8 @@ class Uporabnik_Tip:
             VALUES (?, ?, ?)
             """, [self._sifra, self._naziv, self._opis])
 
+    # TODO pridobi_uporabnik_tip_id(self), WHERE po 'naziv'
+
     @property
     def sifra(self):
         return self._sifra
