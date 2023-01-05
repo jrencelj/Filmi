@@ -14,6 +14,8 @@ class Vloga_Tip:
             INSERT INTO vloga_tip (sifra, naziv)
             VALUES (?, ?)
             """, [self._sifra, self._naziv])
+
+    # TODO pridobi_vloga_tip_id(self), WHERE po 'naziv'
     
     @property
     def sifra(self):
