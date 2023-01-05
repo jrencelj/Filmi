@@ -16,6 +16,8 @@ class Oseba:
             VALUES (?, ?, ?)
             """, [self._ime_priimek, self._url_slika, self._imdb_id_oseba])
 
+    # TODO pridobi_oseba_id(self), WHERE po 'imdb_id_oseba'
+
     def pridobi_oseba():
         '''Pridobi osebo iz baze.'''
         # TODO
