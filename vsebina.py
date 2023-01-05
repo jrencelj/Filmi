@@ -22,26 +22,6 @@ class Vsebina:
         self._opis = opis
         self._datum_prvega_predvajanja = datum_prvega_predvajanja
 
-    def get_vsebina_tip(self):
-        return self._vsebina_tip
-
-    def get_naslov(self):
-        return self._naslov
-
-    def get_dolzina(self):
-        return self._dolzina
-
-    def get_imdb_id_vsebina(self):
-        return self._imdb_id_vsebina
-
-    def get_opis(self):
-        return self._opis
-
-    def get_url_slika(self):
-        return self._url_slika
-
-    # TODO Napiši get in set metode z @property, pusti obsotoječe get metode!
-
     @property
     def naslov(self):
         return self._naslov
