@@ -4,7 +4,6 @@ import re
 import json
 from komentarIMDB import KomentarIMDB
 import os
-from certifikat import Certifikat
 from vsebina_tip import Vsebina_Tip
 
 
