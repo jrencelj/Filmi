@@ -15,4 +15,6 @@ class Vloga_Tip:
             VALUES (?, ?)
             """, [self._sifra, self._naziv])
 
+
+    # TODO Napiši get in set metode za atribute z @property za self._sifra in self._naziv
     
