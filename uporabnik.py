@@ -37,22 +37,22 @@ class Uporabnik:
     def uporabnik_tip(self):
         return self._uporabnik_tip
 
-    @property.setter
+    @uporabnisko_ime.setter
     def uporabnisko_ime(self, vrednost):
         self._uporabnisko_ime = vrednost
 
-    @property.setter
+    @e_naslov.setter
     def e_naslov(self, vrednost):
         self._e_naslov = vrednost
 
-    @property.setter
+    @datum_rojstva.setter
     def datum_rojstva(self, vrednost):
         self._datum_rojstva = vrednost
 
-    @property.setter
+    @geslo.setter
     def geslo(self, vrednost):
         self._geslo = vrednost
 
-    @property.setter
+    @uporabnik_tip.setter
     def uporabnik_tip(self, vrednost):
         self._uporabnik_tip = vrednost

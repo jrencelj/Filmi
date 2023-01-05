@@ -68,39 +68,39 @@ class KomentarIMDB:
     def ocena(self):
         return self._ocena
 
-    @property.setter
+    @imdb_id_komentar.setter
     def imdb_id_komentar(self, vrednost):
         self._imdb_id_komentar = vrednost
 
-    @property.setter
+    @imdb_id_uporabnik.setter
     def imdb_id_uporabnik(self, vrednost):
         self._imdb_id_uporabnik = vrednost
 
-    @property.setter
+    @naslov_komentarja.setter
     def naslov_komentarja(self, vrednost):
         self._naslov_komentarja = vrednost
 
-    @property.setter
+    @komentar.setter
     def komentar(self, vrednost):
         self._komentar = vrednost
 
-    @property.setter
+    @imdb_uporabnik.setter
     def imdb_uporabnik(self, vrednost):
         self._imdb_uporabnik = vrednost
 
-    @property.setter
+    @datum.setter
     def datum(self, vrednost):
         self._datum = vrednost
 
-    @property.setter
+    @se_strinja.setter
     def se_strinja(self, vrednost):
         self._se_strinja = vrednost
 
-    @property.setter
+    @se_ne_strinja.setter
     def se_ne_strinja(self, vrednost):
         self._se_ne_strinja = vrednost
 
-    @property.setter
+    @ocena.setter
     def ocena(self, vrednost):
         self._ocena = vrednost
 

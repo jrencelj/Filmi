@@ -42,6 +42,6 @@ class Vsebina_Tip:
     def naziv(self):
         return self._naziv
 
-    @property.setter
+    @naziv.setter
     def naziv(self, vrednost):
         self._naziv = vrednost

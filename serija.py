@@ -22,16 +22,11 @@ class Serija(Vsebina):
                       self._datum_prvega_predvajanja), self._certifikat.pridobi_certifikat_id(),
                   super().get_vsebina_tip().pridobi_vsebina_tip_id()])
 
-
-    @property.setter
-    def imdb_id(self, vrednost):
-        self._imdb_id = vrednost
-
     @property
     def imdb_id(self):
         return self._imdb_id
 
-    @property.setter
+    @imdb_id.setter
     def imdb_id(self, vrednost):
         self._imdb_id = vrednost
 
@@ -39,7 +34,7 @@ class Serija(Vsebina):
     def leto_izida(self):
         return self._leto_izida
 
-    @property.setter
+    @leto_izida.setter
     def leto_izida(self, vrednost):
         self._leto_izida = vrednost
 
@@ -47,6 +42,6 @@ class Serija(Vsebina):
     def certifikat(self):
         return self._certifikat
 
-    @property.setter
+    @certifikat.setter
     def certifikat(self, vrednost):
         self._certifikat = vrednost

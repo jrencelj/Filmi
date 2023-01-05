@@ -33,14 +33,14 @@ class Oseba:
     def url_slika(self):
         return self._url_slika
 
-    @property.setter
+    @ime_priimek.setter
     def ime_priimek(self, vrednost):
         self._ime_priimek = vrednost
 
-    @property.setter
+    @imdb_id_oseba.setter
     def imdb_id_oseba(self, vrednost):
         self._imdb_id_oseba = vrednost
 
-    @property.setter
+    @url_slika.setter
     def url_slika(self, vrednost):
         self._url_slika = vrednost

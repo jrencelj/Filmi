@@ -28,14 +28,14 @@ class Uporabnik_Tip:
     def opis(self):
         return self._opis
 
-    @property.setter
+    @sifra.setter
     def sifra(self, vrednost):
         self._sifra = vrednost
 
-    @property.setter
+    @naziv.setter
     def naziv(self, vrednost):
         self._naziv = vrednost
 
-    @property.setter
+    @opis.setter
     def opis(self, vrednost):
         self._opis = vrednost

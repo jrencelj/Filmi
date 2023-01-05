@@ -23,11 +23,11 @@ class Vloga_Tip:
     def naziv(self):
         return self._naziv
 
-    @property.setter
+    @sifra.setter
     def sifra(self, vrednost):
         self._sifra = vrednost
 
-    @property.setter
+    @naziv.setter
     def naziv(self, vrednost):
         self._naziv = vrednost
 

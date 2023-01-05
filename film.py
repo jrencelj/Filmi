@@ -42,11 +42,11 @@ class Film(Vsebina):
     def leto_izida(self):
         return self._leto_izida
 
-    @property.setter
+    @certifikat.setter
     def certifikat(self, vrednost):
         self._certifikat = vrednost
 
-    @property.setter
+    @leto_izida.setter
     def leto_izida(self, vrednost):
         self._leto_izida = vrednost
 
