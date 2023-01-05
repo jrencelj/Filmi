@@ -14,6 +14,9 @@ class Zvrst:
             VALUES (?)
             """, [self._naziv_zvrsti])
 
+
+    # TODO pridobi_zvrst_id(self), WHERE po 'naziv_zvrsti'
+
     @property
     def naziv_zvrsti(self):
         return self._naziv_zvrsti
