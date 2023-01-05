@@ -31,5 +31,5 @@ class Vloga_Tip:
     def naziv(self, vrednost):
         self._naziv = vrednost
 
-    # TODO Napiši get in set metode za atribute z @property za self._sifra in self._naziv
+    
     
