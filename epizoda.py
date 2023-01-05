@@ -27,7 +27,7 @@ class Epizoda:
     def nadrejena_serija(self):
         return self._nadrejena_serija
 
-    @property.setter
+    @nadrejena_serija.setter
     def nadrejena_serija(self, vrednost):
         self._nadrejena_serija = vrednost
 
