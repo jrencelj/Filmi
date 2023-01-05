@@ -29,7 +29,7 @@ class Certifikat:
     def sifra(self):
         return self._sifra
 
-    @property.setter
+    @sifra.setter
     def sifra(self, vrednost):
         self._sifra = vrednost
 
