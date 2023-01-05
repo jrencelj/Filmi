@@ -1,0 +1,37 @@
+% rebase("osnova.html")
+<!--
+<div class = "list-group d-inline">
+    % for film in filmi:
+        <li class = "list-group-item list-group-item-action">
+            <h3>{{ film._naslov }}</h3>
+            <img src = "{{ film._url_slika }}" height="150" width="100">
+        </li>
+    % end
+</div>
+-->
+<div class = "container">
+    % for film in [tuple(filmi[i:i+5]) for i in range(0, 50, 5)]:
+    <div class = "row">
+        <div class = "col">
+            <img src = "{{ film[0]._url_slika }}" height="300" width="200">
+            <h4>{{ film[0]._naslov }}</h3>
+        </div>
+        <div class = "col">
+            <img src = "{{ film[1]._url_slika }}" height="300" width="200">
+            <h4>{{ film[1]._naslov }}</h4>
+        </div>
+        <div class = "col">
+            <img src = "{{ film[2]._url_slika }}" height="300" width="200">
+            <h4>{{ film[2]._naslov }}</h4>
+        </div>
+        <div class = "col">
+            <img src = "{{ film[3]._url_slika }}" height="300" width="200">
+            <h4>{{ film[3]._naslov }}</h4>
+        </div>
+        <div class = "col">
+            <img src = "{{ film[4]._url_slika }}" height="300" width="200">
+            <h4>{{ film[4]._naslov }}</h4>
+        </div>
+    </div>
+    % end
+</div>
