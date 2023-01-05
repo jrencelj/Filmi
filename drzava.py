@@ -31,6 +31,6 @@ class Drzava:
     def drzava_ime(self):
         return self._drzava_ime
 
-    @property.setter
+    @drzava_ime.setter
     def drzava_ime(self, vrednost):
         self._drzava_ime = vrednost
