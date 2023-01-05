@@ -9,6 +9,7 @@
     % end
 </div>
 -->
+<!--
 <div class = "container">
     % for film in [tuple(filmi[i:i+5]) for i in range(0, 50, 5)]:
     <div class = "row">
@@ -35,3 +36,11 @@
     </div>
     % end
 </div>
+-->
+
+% for film in filmi:
+<div class = "list-item">
+    <h4>{{ film.naslov }}</h4>
+    <img src = "{{ film.url_slika }}" height = "300" width = "200">
+</div>
+% end
