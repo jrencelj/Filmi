@@ -29,10 +29,10 @@ class Film(Vsebina):
             INSERT INTO vsebina (naslov, dolzina, leto_izida, url_slika, imdb_id_vsebina, opis, datum_prvega_predvajanje, certifikat_id,
                             vsebina_tip_id)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """, [super().get_naslov(), super().get_dolzina(), self._leto_izida, super().get_url_slika(), super().get_imdb_id_vsebina(),
-                  super().get_opis(), Bralnik.v_tip_datum_tri_crke(
+            """, [super().naslov, super().dolzina, self._leto_izida, super().url_slika, super().imdb_id_vsebina,
+                  super().opis, Bralnik.v_tip_datum_tri_crke(
                       self._datum_prvega_predvajanja), self._certifikat.pridobi_certifikat_id(),
-                  super().get_vsebina_tip().pridobi_vsebina_tip_id()])
+                  super().vsebina_tip.pridobi_vsebina_tip_id()])
 
     @property
     def certifikat(self):
