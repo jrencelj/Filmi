@@ -1,0 +1,9 @@
+*.db
+__pycache__
+*.json
+api_key.txt
+.DS_Store
+*.zip
+*.jpeg
+serije.csv
+test.py
