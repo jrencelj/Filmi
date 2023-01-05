@@ -18,6 +18,6 @@ class Zvrst:
     def naziv_zvrsti(self):
         return self._naziv_zvrsti
 
-    @property.setter
+    @naziv_zvrsti.setter
     def naziv_zvrsti(self, vrednost):
         self._naziv_zvrsti = vrednost

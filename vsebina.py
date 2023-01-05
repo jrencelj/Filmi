@@ -49,31 +49,31 @@ class Vsebina:
     def vsebina_tip(self):
         return self._vsebina_tip
 
-    @property.setter
+    @naslov.setter
     def naslov(self, vrednost):
         self._naslov = vrednost
 
-    @property.setter
+    @dolzina.setter
     def dolzina(self, vrednost):
         self._dolzina = vrednost
 
-    @property.setter
+    @url_slika.setter
     def url_slika(self, vrednost):
         self._url_slika = vrednost
 
-    @property.setter
+    @imdb_id_vsebina.setter
     def imdb_id_vsebina(self, vrednost):
         self._imdb_id_vsebina = vrednost
 
-    @property.setter
+    @opis.setter
     def opis(self, vrednost):
         self._opis = vrednost
 
-    @property.setter
+    @datum_prvega_predvajanja.setter
     def datum_prvega_predvajanja(self, vrednost):
         self._datum_prvega_predvajanja = vrednost
 
-    @property.setter
+    @vsebina_tip.setter
     def vsebina_tip(self, vrednost):
         self._vsebina_tip = vrednost
 
