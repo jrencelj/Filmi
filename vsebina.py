@@ -7,9 +7,10 @@ import os
 from certifikat import Certifikat
 from vsebina_tip import Vsebina_Tip
 
+
 class Vsebina:
-    def __init__(self, naslov, dolzina, url_slika, imdb_id_vsebina, opis,  
-                datum_prvega_predvajanja, vsebina_tip):
+    def __init__(self, naslov, dolzina, url_slika, imdb_id_vsebina, opis,
+                 datum_prvega_predvajanja, vsebina_tip):
         self._naslov = naslov
         self._imdb_id_vsebina = imdb_id_vsebina
         self._dolzina = dolzina
@@ -20,10 +21,10 @@ class Vsebina:
             self._vsebina_tip = vsebina_tip
         self._opis = opis
         self._datum_prvega_predvajanja = datum_prvega_predvajanja
-        
+
     def get_vsebina_tip(self):
         return self._vsebina_tip
-        
+
     def get_naslov(self):
         return self._naslov
 
@@ -40,6 +41,62 @@ class Vsebina:
         return self._url_slika
 
     # TODO Napiši get in set metode z @property, pusti obsotoječe get metode!
+
+    @property
+    def naslov(self):
+        return self._naslov
+
+    @property
+    def dolzina(self):
+        return self._dolzina
+
+    @property
+    def url_slika(self):
+        return self._url_slika
+
+    @property
+    def imdb_id_vsebina(self):
+        return self._imdb_id_vsebina
+
+    @property
+    def opis(self):
+        return self._opis
+
+    @property
+    def datum_prvega_predvajanja(self):
+        return self._datum_prvega_predvajanja
+
+    @property
+    def vsebina_tip(self):
+        return self._vsebina_tip
+
+    @property.setter
+    def naslov(self, vrednost):
+        self._naslov = vrednost
+
+    @property.setter
+    def dolzina(self, vrednost):
+        self._dolzina = vrednost
+
+    @property.setter
+    def url_slika(self, vrednost):
+        self._url_slika = vrednost
+
+    @property.setter
+    def imdb_id_vsebina(self, vrednost):
+        self._imdb_id_vsebina = vrednost
+
+    @property.setter
+    def opis(self, vrednost):
+        self._opis = vrednost
+
+    @property.setter
+    def datum_prvega_predvajanja(self, vrednost):
+        self._datum_prvega_predvajanja = vrednost
+
+    @property.setter
+    def vsebina_tip(self, vrednost):
+        self._vsebina_tip = vrednost
 
     @staticmethod
     def pridobi_data_key(vsebina_strani):
@@ -61,8 +118,10 @@ class Vsebina:
         '''Pridobi link do naslednjih komentarjev. Kot parameter vzame HTML vsebino spletne strani, ki je BeautifulSoup objekt in
             IMDB identifikator vsebine (film, serija, epizoda) in vrne link do naslednjega seznama komentarjev za podano vsebino.'''
         data_key = Vsebina.pridobi_data_key(vsebina_strani)
-        if data_key is None: return None
-        url = "https://www.imdb.com/title/" + vsebina_imdb_id + "/reviews/_ajax?ref_=undefined&paginationKey=" + data_key
+        if data_key is None:
+            return None
+        url = "https://www.imdb.com/title/" + vsebina_imdb_id + \
+            "/reviews/_ajax?ref_=undefined&paginationKey=" + data_key
         return url
 
     def pridobi_komentarje(self):
@@ -72,7 +131,8 @@ class Vsebina:
         print(url)
         odziv = Bralnik.pridobi_html(url)
         vsebina_strani = BeautifulSoup(odziv, 'html.parser')
-        div_komentarji = vsebina_strani.find_all('div', class_ = 'review-container')
+        div_komentarji = vsebina_strani.find_all(
+            'div', class_='review-container')
         komentarji = dict()
         zastavica = False
         stevec = 0
@@ -83,40 +143,48 @@ class Vsebina:
                 stevec += 1
                 print(stevec)
                 komentar_podatki = dict()
-                komentar_imdb_id = KomentarIMDB.pridobi_imdb_id_komentarja(div_komentar)
-                komentar_podatki['Title'] = KomentarIMDB.pridobi_naslov_komentarja(div_komentar)
-                komentar_podatki['Comment'] = KomentarIMDB.pridobi_vsebino_komentarja(div_komentar)
-                komentar_podatki['Mark'] = KomentarIMDB.pridobi_oceno(div_komentar)
-                komentar_podatki['Date'] = KomentarIMDB.pridobi_datum_komentarja(div_komentar)
-                komentar_podatki['Weight'] = KomentarIMDB.pridobi_tezo_komentarja(div_komentar)
-                komentar_podatki['User'] = KomentarIMDB.pridobi_pisca_komentarja(div_komentar)
-                komentar_podatki['User ImdbID'] = KomentarIMDB.pridobi_imdbID_pisca_komentarja(div_komentar)
+                komentar_imdb_id = KomentarIMDB.pridobi_imdb_id_komentarja(
+                    div_komentar)
+                komentar_podatki['Title'] = KomentarIMDB.pridobi_naslov_komentarja(
+                    div_komentar)
+                komentar_podatki['Comment'] = KomentarIMDB.pridobi_vsebino_komentarja(
+                    div_komentar)
+                komentar_podatki['Mark'] = KomentarIMDB.pridobi_oceno(
+                    div_komentar)
+                komentar_podatki['Date'] = KomentarIMDB.pridobi_datum_komentarja(
+                    div_komentar)
+                komentar_podatki['Weight'] = KomentarIMDB.pridobi_tezo_komentarja(
+                    div_komentar)
+                komentar_podatki['User'] = KomentarIMDB.pridobi_pisca_komentarja(
+                    div_komentar)
+                komentar_podatki['User ImdbID'] = KomentarIMDB.pridobi_imdbID_pisca_komentarja(
+                    div_komentar)
                 komentarji[komentar_imdb_id] = komentar_podatki
-            naslednji_url = Vsebina.pridobi_naslednji_seznam_komentarjev(vsebina_strani, self._imdb_id)
+            naslednji_url = Vsebina.pridobi_naslednji_seznam_komentarjev(
+                vsebina_strani, self._imdb_id)
             print(naslednji_url)
             if naslednji_url is None:
                 zastavica = True
             else:
                 odziv = Bralnik.pridobi_html(naslednji_url)
                 vsebina_strani = BeautifulSoup(odziv, 'html.parser')
-                div_komentarji = vsebina_strani.find_all('div', class_ = 'review-container')
+                div_komentarji = vsebina_strani.find_all(
+                    'div', class_='review-container')
         vsebina[self._naslov] = komentarji
         return vsebina
-
 
     def shrani_komentarje_v_json(self):
         '''Shrani komentarje vsebine v json datoteko.'''
         ime_datoteke = Vsebina.preoblikuj_v_ime(self._naslov)
         podatki = self.pridobi_komentarje()
-        with open(f'data/komentar/komentar_film/{ime_datoteke}.json', 'w', encoding = 'utf8') as f:
+        with open(f'data/komentar/komentar_film/{ime_datoteke}.json', 'w', encoding='utf8') as f:
             json.dump(podatki, f)
-
 
     def shrani_komentarje_serij_v_json(self):
         '''Shrani komentarje vsebine v json datoteko.'''
         ime_datoteke = Vsebina.preoblikuj_v_ime(self._naslov)
         podatki = self.pridobi_komentarje()
-        with open(f'data/komentar/komentar_serija/{ime_datoteke}.json', 'w', encoding = 'utf8') as f:
+        with open(f'data/komentar/komentar_serija/{ime_datoteke}.json', 'w', encoding='utf8') as f:
             json.dump(podatki, f)
 
     @staticmethod
@@ -125,13 +193,14 @@ class Vsebina:
         with open('data/film/filmi.json', 'r') as f:
             filmi = json.load(f)
         for naslov, podatki in filmi.items():
-            vsebina = Vsebina(naslov, podatki['imdbID'], None, None, None, None, None, None, None, None)
+            vsebina = Vsebina(
+                naslov, podatki['imdbID'], None, None, None, None, None, None, None, None)
             ime_datoteke = Vsebina.preoblikuj_v_ime(naslov)
             if os.path.exists(f'data/komentar/komentar_film/{ime_datoteke}.json'):
                 continue
             else:
                 print(naslov)
-                vsebina.shrani_komentarje_v_json() 
+                vsebina.shrani_komentarje_v_json()
 
     @staticmethod
     def shrani_komentarje_vse_serije():
@@ -139,10 +208,11 @@ class Vsebina:
         with open('data/serija/serije.json', 'r') as f:
             serije = json.load(f)
         for naslov, podatki in serije.items():
-            vsebina = Vsebina(naslov, podatki['imdbID'], None, None, None, None, None, None, None, None)
+            vsebina = Vsebina(
+                naslov, podatki['imdbID'], None, None, None, None, None, None, None, None)
             ime_datoteke = Vsebina.preoblikuj_v_ime(naslov)
             if os.path.exists(f'data/komentar/komentar_serija/{ime_datoteke}.json'):
                 continue
             else:
                 print(naslov)
-                vsebina.shrani_komentarje_serij_v_json() 
+                vsebina.shrani_komentarje_serij_v_json()
