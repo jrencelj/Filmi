@@ -39,6 +39,8 @@ class Vsebina:
     def get_url_slika(self):
         return self._url_slika
 
+    # TODO Napiši get in set metode z @property, pusti obsotoječe get metode!
+
     @staticmethod
     def pridobi_data_key(vsebina_strani):
         '''Prejme HTML vsebino strani, ki je BeautifulSoup objekt in vrne ključ do naslednjega seznama komentarjev.
