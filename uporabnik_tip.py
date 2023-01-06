@@ -16,7 +16,16 @@ class Uporabnik_Tip:
             VALUES (?, ?, ?)
             """, [self._sifra, self._naziv, self._opis])
 
-    # TODO pridobi_uporabnik_tip_id(self), WHERE po 'naziv'
+    def pridobi_uporabnik_tip_id(self):
+        '''Pridobi id uporabniškega tipa iz baze'''
+        conn = dbapi.connect('filmi.db')
+        with conn:
+            cursor = conn.execute("""
+                SELECT id FROM uporabnik_tip
+                WHERE naziv=?
+            """, [self._naziv])
+            id = cursor.fetchone()[0]
+            return id
 
     @property
     def sifra(self):
