@@ -14,8 +14,16 @@ class Zvrst:
             VALUES (?)
             """, [self._naziv_zvrsti])
 
-
-    # TODO pridobi_zvrst_id(self), WHERE po 'naziv_zvrsti'
+    def pridobi_zvrst_id(self):
+        '''Pridobi id zvrsti iz baze'''
+        conn = dbapi.connect('filmi.db')
+        with conn:
+            cursor = conn.execute("""
+                SELECT id FROM zvrst
+                WHERE naziv_zvrsti=?
+            """, [self._naziv_zvrsti])
+            id = cursor.fetchone()[0]
+            return id
 
     @property
     def naziv_zvrsti(self):
