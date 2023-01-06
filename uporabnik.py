@@ -1,4 +1,5 @@
 from uporabnik_tip import Uporabnik_Tip
+import sqlite3 as dbapi
 
 
 class Uporabnik:
@@ -17,7 +18,16 @@ class Uporabnik:
         # TODO
         pass
 
-    # TODO pridobi_uporabnik_id(self), WHERE po 'uporabnisko_ime'
+    def pridobi_uporabnik_id(self):
+        '''Pridobi id uporabnika iz baze'''
+        conn = dbapi.connect('filmi.db')
+        with conn:
+            cursor = conn.execute("""
+                SELECT id FROM uporabnik
+                WHERE uporabnisko_ime=?
+            """, [self._uporabnisko_ime])
+            id = cursor.fetchone()[0]
+            return id
 
     @property
     def uporabnisko_ime(self):
