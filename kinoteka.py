@@ -7,20 +7,18 @@ import re
 
 class Kinoteka:
 
-    def __init__(self, ime, url):
-        self._ime = ime
-        self._url = url
+    def __init__(self, naziv_kinoteka, url_kinoteka):
+        self._naziv_kinoteka = naziv_kinoteka
+        self._url_kinoteka = url_kinoteka
 
     def shrani_kinoteka(self):
         '''Shrani kinoteko v bazo.'''
         conn = dbapi.connect('filmi.db')
         with conn:
             conn.execute("""
-            INSERT INTO kinoteka (ime, url)
+            INSERT INTO kinoteka (naziv_kinoteka, url_kinoteka)
             VALUES (?, ?)
-            """, [self._ime, self._url])
-
-    # TODO pridobi_kinoteka_id(self), WHERE po 'ime'
+            """, [self._naziv_kinoteka, self._url_kinoteka])
 
     def pridobi_filme(self):
         '''Pridobi filme in jih shrani v json datoteko.'''
@@ -28,7 +26,7 @@ class Kinoteka:
                     'Netflix': 'netflix',
                     'Disney+': 'disney-plus',
                     'SkyShowtime': 'skyshowtime'}
-        kinoteka = kinoteke[self._ime]
+        kinoteka = kinoteke[self._naziv_kinoteka]
         vsebina_kinoteka = dict()
         vsebina_kinoteka[kinoteka] = list()
         for leto in range(1900, 2023):
@@ -51,7 +49,7 @@ class Kinoteka:
                     'Netflix': 'netflix',
                     'Disney+': 'disney-plus',
                     'SkyShowtime': 'skyshowtime'}
-        kinoteka = kinoteke[self._ime]
+        kinoteka = kinoteke[self._naziv_kinoteka]
         vsebina_kinoteka = dict()
         vsebina_kinoteka[kinoteka] = list()
         for leto in range(1900, 2023):
@@ -69,17 +67,17 @@ class Kinoteka:
             json.dump(vsebina_kinoteka, f)
 
     @property
-    def ime(self):
-        return self._ime
+    def naziv_kinoteka(self):
+        return self._naziv_kinoteka
 
     @property
-    def url(self):
-        return self._url
+    def url_kinoteka(self):
+        return self._url_kinoteka
 
-    @ime.setter
+    @naziv_kinoteka.setter
     def ime(self, vrednost):
-        self._ime = vrednost
+        self._naziv_kinoteka = vrednost
 
-    @url.setter
+    @url_kinoteka.setter
     def url(self, vrednost):
-        self._url = vrednost
+        self._url_kinoteka = vrednost
