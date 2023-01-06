@@ -20,6 +20,17 @@ class Kinoteka:
             VALUES (?, ?)
             """, [self._naziv_kinoteka, self._url_kinoteka])
 
+    def pridobi_kinoteka_id(self):
+        '''Pridobi id kinoteke iz baze'''
+        conn = dbapi.connect('filmi.db')
+        with conn:
+            cursor = conn.execute("""
+                SELECT id FROM kinoteka
+                WHERE naziv_kinoteka=?
+            """, [self._naziv_kinoteka])
+            id = cursor.fetchone()[0]
+            return id
+
     def pridobi_filme(self):
         '''Pridobi filme in jih shrani v json datoteko.'''
         kinoteke = {'HBO Max': 'hbo-max',
