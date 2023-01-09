@@ -11,28 +11,15 @@ class Film(Vsebina):
     def __init__(self, naslov, dolzina, url_slika, imdb_id_vsebina, opis, datum_prvega_predvajanja, vsebina_tip, leto_izida,
                  certifikat):
         if not isinstance(certifikat, Certifikat):
-            raise Exception(f'{certifikat} ni objekt razreda Certifikat')
+            raise Exception(f'{certifikat} ni objekt razreda Certifikat!')
         else:
             self._certifikat = certifikat
         if not isinstance(leto_izida, int):
-            raise Exception(f'{leto_izida} ni objekt razreda int')
+            raise Exception(f'{leto_izida} ni objekt razreda int!')
         else:
             self._leto_izida = leto_izida
         super().__init__(naslov, dolzina, url_slika, imdb_id_vsebina,
                          opis, datum_prvega_predvajanja, vsebina_tip)
-
-    def shrani_film(self):
-        '''Shrani film v bazo.'''
-        conn = dbapi.connect('filmi.db')
-        with conn:
-            conn.execute("""
-            INSERT INTO vsebina (naslov, dolzina, leto_izida, url_slika, imdb_id_vsebina, opis, datum_prvega_predvajanje, certifikat_id,
-                            vsebina_tip_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """, [super().naslov, super().dolzina, self._leto_izida, super().url_slika, super().imdb_id_vsebina,
-                  super().opis, Bralnik.v_tip_datum_tri_crke(
-                      self._datum_prvega_predvajanja), self._certifikat.pridobi_certifikat_id(),
-                  super().vsebina_tip.pridobi_vsebina_tip_id()])
 
     @property
     def certifikat(self):
@@ -49,6 +36,20 @@ class Film(Vsebina):
     @leto_izida.setter
     def leto_izida(self, vrednost):
         self._leto_izida = vrednost
+
+
+    def shrani_film(self):
+        '''Shrani film v bazo.'''
+        conn = dbapi.connect('filmi.db')
+        with conn:
+            conn.execute("""
+            INSERT INTO vsebina (naslov, dolzina, leto_izida, url_slika, imdb_id_vsebina, opis, datum_prvega_predvajanje, certifikat_id,
+                            vsebina_tip_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, [super().naslov, super().dolzina, self._leto_izida, super().url_slika, super().imdb_id_vsebina,
+                  super().opis, Bralnik.v_tip_datum_tri_crke(
+                      self._datum_prvega_predvajanja), self._certifikat.pridobi_certifikat_id(),
+                  super().vsebina_tip.pridobi_vsebina_tip_id()])
 
     @staticmethod
     def pridobi_vse_filme():
