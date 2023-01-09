@@ -4,7 +4,7 @@ from film import Film
 
 @bottle.route('/<filename>.css')
 def stylesheets(filename):
-    return bottle.static_file(f'{filename}.css', root='views')
+    return bottle.static_file(f'{filename}.css', root='static')
 
 
 @bottle.route("/")
@@ -24,11 +24,11 @@ def serije():
     return FileNotFoundError
 
 
-@bottle.route("/static/css/<filename>")
-def serve_static_file_css(filename):
-    return bottle.static_file(
-        filename, root="./static/css"
-    )
+# @bottle.route("/static/css/<filename>")
+# def serve_static_file_css(filename):
+#     return bottle.static_file(
+#         filename, root="./static/css"
+#     )
 
 
 bottle.run(debug=True, reloader=True)
