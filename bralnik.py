@@ -35,6 +35,7 @@ class Bralnik:
             'December': 12
 
         }
+        if datum == 'N/A': return None
         dan, mesec, leto = datum.split()
         return datetime(int(leto), meseci[mesec], int(dan))
 
@@ -56,6 +57,7 @@ class Bralnik:
             'Dec': 12
 
         }
+        if datum == 'N/A': return None
         dan, mesec, leto = datum.split()
         return datetime(int(leto), meseci[mesec], int(dan))
 
