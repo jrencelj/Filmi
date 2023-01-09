@@ -40,7 +40,9 @@
 
 % for film in filmi:
 <div class = "list-item">
-    <h4>{{ film.naslov }}</h4>
+    <div class = "movie-title">
+        {{ film.naslov }}
+    </div>
     <img src = "{{ film.url_slika }}" height = "300" width = "200">
 </div>
 % end
