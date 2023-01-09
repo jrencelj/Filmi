@@ -1,5 +1,6 @@
 import bottle
 from film import Film
+from serija import Serija
 
 
 @bottle.route('/<filename>.css')
@@ -20,15 +21,7 @@ def filmi():
 
 @bottle.route("/serije")
 def serije():
-    # TODO
-    return FileNotFoundError
-
-
-# @bottle.route("/static/css/<filename>")
-# def serve_static_file_css(filename):
-#     return bottle.static_file(
-#         filename, root="./static/css"
-#     )
-
+    serije = Serija.pridobi_vse_serije()
+    return bottle.template('serije.html', serije=serije)
 
 bottle.run(debug=True, reloader=True)
