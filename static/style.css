@@ -1,0 +1,22 @@
+.list-item {
+    background-color: white !important;
+    display: inline-block;
+    align-self: center !important;
+    align-content: center !important;
+    height: 350px !important;
+    width: 15% !important;
+    border: 10px !important;
+    border-color: black !important;
+}
+
+.movie-title {
+    align-content: center !important;
+    text-align: center;
+}
+
+.list-item > img {
+    display: block;
+    align-content: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
