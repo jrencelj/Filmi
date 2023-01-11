@@ -6,7 +6,7 @@ from vsebina_tip import Vsebina_Tip
 
 class Serija(Vsebina):
 
-    def __init__(self, naslov, dolzina, url_slika, imdb_id_vsebina, opis, datum_prvega_predvajanja, vsebina_tip, leto_izida,
+    def __init__(self, id, naslov, dolzina, url_slika, imdb_id_vsebina, opis, datum_prvega_predvajanja, vsebina_tip, leto_izida,
                  certifikat):
         if not isinstance(certifikat, Certifikat):
             raise Exception(f'{certifikat} ni objekt razreda Certifikat!')
@@ -16,7 +16,7 @@ class Serija(Vsebina):
             raise Exception(f'{leto_izida} ni objekt razreda int!')
         else:
             self._leto_izida = leto_izida
-        super().__init__(naslov, dolzina, url_slika, imdb_id_vsebina,
+        super().__init__(id, naslov, dolzina, url_slika, imdb_id_vsebina,
                          opis, datum_prvega_predvajanja, vsebina_tip)
 
         #TODO
@@ -51,6 +51,18 @@ class Serija(Vsebina):
                   self.vsebina_tip.pridobi_vsebina_tip_id()])
 
     @staticmethod
+    def pridobi_serijo_z_id(id):
+        '''Pridobi podatke za serijo z danim id-jem.'''
+        conn = dbapi.connect('filmi.db')
+        with conn:
+            cursor = conn.execute("""
+            SELECT * FROM vsebina WHERE id = ?
+            """, [id])
+            podatek = cursor.fetchone()
+        return Serija(podatek[0], podatek[1], podatek[2], podatek[4], podatek[5], podatek[6], podatek[7], Vsebina_Tip.pridobi_vsebina_tip_po_id(podatek[11]),
+                    podatek[3], Certifikat.pridobi_certifikat_po_id(podatek[10]))
+
+    @staticmethod
     def pridobi_vse_serije():
         '''Pridobi vse filme iz baze in jih vrne v seznama.'''
         conn = dbapi.connect('filmi.db')
@@ -60,7 +72,7 @@ class Serija(Vsebina):
             """)
             podatki = list(cursor.fetchall())
             return [
-                Serija(podatek[1], podatek[2], podatek[4], podatek[5], podatek[6], podatek[7],
+                Serija(podatek[0], podatek[1], podatek[2], podatek[4], podatek[5], podatek[6], podatek[7],
                      Vsebina_Tip.pridobi_vsebina_tip_po_id(podatek[11]), podatek[3], Certifikat.pridobi_certifikat_po_id(podatek[10]))
                 for podatek in podatki
             ]
