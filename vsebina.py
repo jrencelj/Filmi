@@ -8,8 +8,9 @@ from vsebina_tip import Vsebina_Tip
 
 
 class Vsebina:
-    def __init__(self, naslov, dolzina, url_slika, imdb_id_vsebina, opis,
+    def __init__(self, id, naslov, dolzina, url_slika, imdb_id_vsebina, opis,
                  datum_prvega_predvajanja, vsebina_tip):
+        self._id = id
         self._naslov = naslov
         self._imdb_id_vsebina = imdb_id_vsebina
         self._dolzina = dolzina
@@ -20,6 +21,14 @@ class Vsebina:
             self._vsebina_tip = vsebina_tip
         self._opis = opis
         self._datum_prvega_predvajanja = datum_prvega_predvajanja
+
+    @property
+    def id(self):
+        return self._id
+
+    @property
+    def id(self):
+        return self._id
 
     @property
     def naslov(self):
