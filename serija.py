@@ -19,8 +19,6 @@ class Serija(Vsebina):
         super().__init__(id, naslov, dolzina, url_slika, imdb_id_vsebina,
                          opis, datum_prvega_predvajanja, vsebina_tip)
 
-        #TODO
-
     @property
     def leto_izida(self):
         return self._leto_izida
@@ -49,6 +47,18 @@ class Serija(Vsebina):
                   self.opis, Bralnik.v_tip_datum_tri_crke(
                       self.datum_prvega_predvajanja), self.certifikat.pridobi_certifikat_id(),
                   self.vsebina_tip.pridobi_vsebina_tip_id()])
+
+    @staticmethod
+    def pridobi_id_serije_po_imdb_id(imdb_id_vsebine):
+        '''Pridobi id serije.'''
+        # TODO
+        conn = dbapi.connect('filmi.db')
+        with conn:
+            cursor = conn.execute("""
+            SELECT id FROM vsebina WHERE imdb_id_vsebina = ?
+            """, [imdb_id_vsebine])
+            id = cursor.fetchone()[0]
+            return id
 
     @staticmethod
     def pridobi_serijo_z_id(id):
