@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
+import sqlite3 as dbapi
 import json
 import pandas as pd
 import time
@@ -11,16 +12,31 @@ from dopolni_igralci_filmi_serije import pridobi_reziserje_epizod
 
 class Epizoda:
 
-    def __init__(self, nadrejena_serija):
+    def __init__(self, id, naslov, dolzina, url_slika, imdb_id_vsebina, opis,
+                 datum_prvega_predvajanja, vsebina_tip, nadrejena_serija, sezona, epizoda):
+        self._epizoda = epizoda
+        self._sezona = sezona
+        # TODO
         if not isinstance(nadrejena_serija, Serija):
             raise Exception(f'{nadrejena_serija} ni objekt razreda Serija')
         else:
             self._nadrejena_serija = nadrejena_serija
-        pass
+        super().__init__(id, naslov, dolzina, url_slika, imdb_id_vsebina,
+                         opis, datum_prvega_predvajanja, vsebina_tip)
 
-    def shrani_epizoda(self):
+    def shrani(self):
         '''Shrani epizodo v bazo.'''
         # TODO
+        conn = dbapi.connect('filmi.db')
+        with conn:
+            conn.execute("""
+            INSERT INTO vsebina (naslov, dolzina, leto_izida, url_slika, imdb_id_vsebina, opis, datum_prvega_predvajanje, certifikat_id,
+                            vsebina_tip_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, [super().naslov, super().dolzina, self._leto_izida, super().url_slika, super().imdb_id_vsebina,
+                  super().opis, Bralnik.v_tip_datum_tri_crke(
+                      self._datum_prvega_predvajanja), self._certifikat.pridobi_certifikat_id(),
+                  super().vsebina_tip.pridobi_vsebina_tip_id()])
         pass
 
     @property
@@ -30,6 +46,7 @@ class Epizoda:
     @nadrejena_serija.setter
     def nadrejena_serija(self, vrednost):
         self._nadrejena_serija = vrednost
+
 
 
 def dodaj_reziserje(ime_serije):
