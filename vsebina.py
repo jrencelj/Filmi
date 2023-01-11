@@ -26,9 +26,9 @@ class Vsebina:
     def id(self):
         return self._id
 
-    @property
-    def id(self):
-        return self._id
+    @id.setter
+    def id(self, vrednost):
+        self._id = vrednost
 
     @property
     def naslov(self):
