@@ -20,3 +20,8 @@
     margin-left: auto !important;
     margin-right: auto !important;
 }
+
+a.content-link, a.content-link:hover, a.content-link:visited, a.content-link:active {
+    color: black !important;
+    text-decoration: none !important;
+}
