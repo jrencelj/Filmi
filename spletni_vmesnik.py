@@ -29,4 +29,9 @@ def podrobno_film(id):
     film = Film.pridobi_film_z_id(id)
     return bottle.template('podrobno_film.html', film = film)
 
+@bottle.route("/serije/<id:int>")
+def podrobno_film(id):
+    serija = Serija.pridobi_serijo_z_id(id)
+    return bottle.template('podrobno_serija.html', serija = serija)
+
 bottle.run(debug=True, reloader=True)
