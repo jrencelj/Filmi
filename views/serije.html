@@ -2,9 +2,14 @@
 
 % for serija in serije:
 <div class = "list-item">
+    <a href = "/serije/{{ serija.id }}" class="content-link">
     <div class = "movie-title">
         {{ serija.naslov }}
     </div>
+    </a>
     <img src = "{{ serija.url_slika }}" height = "300" width = "200">
 </div>
 % end
+
+
+
