@@ -24,4 +24,9 @@ def serije():
     serije = Serija.pridobi_vse_serije()
     return bottle.template('serije.html', serije=serije)
 
+@bottle.route("/filmi/<id:int>")
+def podrobno_film(id):
+    film = Film.pridobi_film_z_id(id)
+    return bottle.template('podrobno_film.html', film = film)
+
 bottle.run(debug=True, reloader=True)
