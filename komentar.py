@@ -1,9 +1,10 @@
 from film import Film
 from uporabnik import Uporabnik
-
+import sqlite3 as dbapi
 
 class Komentar:
-    def __init__(self, uporabnik, naslov_komentar, besedilo_komentar, ocena, film, ura_datum):
+    def __init__(self, id, uporabnik, naslov_komentar, besedilo_komentar, ocena, film, ura_datum):
+        self._id = id
         self._uporabnik = uporabnik
         self._naslov_komentar = naslov_komentar
         self._besedilo_komentar = besedilo_komentar
@@ -23,6 +24,14 @@ class Komentar:
         # TODO
         pass
 
+    @property
+    def id(self):
+        return self._id
+    
+    @id.setter
+    def id(self, vrednost):
+        self._id = vrednost
+    
     @property
     def uporabnik(self):
         return self._uporabnik
@@ -70,3 +79,7 @@ class Komentar:
     @ura_datum.setter
     def ura_datum(self, vrednost):
         self._ura_datum = vrednost
+
+    def vstavi_komentar(self):
+        """Shrani komentar, ki ga vpiše uporabnik, v bazo."""
+        pass

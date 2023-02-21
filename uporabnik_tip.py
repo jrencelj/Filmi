@@ -8,7 +8,7 @@ class Uporabnik_Tip:
         self._opis = opis
 
     def shrani_uporabnik_tip(self):
-        '''Shrani uporabnik tip v bazo.'''
+        """Shrani uporabnik tip v bazo."""
         conn = dbapi.connect('filmi.db')
         with conn:
             conn.execute("""
@@ -22,8 +22,8 @@ class Uporabnik_Tip:
         with conn:
             cursor = conn.execute("""
                 SELECT id FROM uporabnik_tip
-                WHERE naziv=?
-            """, [self._naziv])
+                WHERE sifra=? AND naziv=?
+            """, [self.sifra, self.naziv])
             id = cursor.fetchone()[0]
             return id
 

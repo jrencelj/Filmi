@@ -7,13 +7,14 @@ import re
 
 class Kinoteka:
 
-    def __init__(self, naziv_kinoteka, url_kinoteka):
+    def __init__(self, id, naziv_kinoteka, url_kinoteka):
+        self._id = id
         self._naziv_kinoteka = naziv_kinoteka
         self._url_kinoteka = url_kinoteka
 
     def shrani_kinoteka(self):
-        '''Shrani kinoteko v bazo.'''
-        conn = dbapi.connect('filmi.db')
+        """Shrani kinoteko v bazo."""
+        conn = dbapi.connect("filmi.db")
         with conn:
             conn.execute("""
             INSERT INTO kinoteka (naziv_kinoteka, url_kinoteka)
@@ -77,6 +78,21 @@ class Kinoteka:
         with open(f'data/serija/kinoteka/{kinoteka}.json', 'w', encoding='utf8') as f:
             json.dump(vsebina_kinoteka, f)
 
+    
+    @staticmethod
+    def pridobi_id_kinoteka_po_naziv(naziv):
+        conn = dbapi.connect("filmi.db")
+        with conn:
+            cursor = conn.execute("""
+                SELECT id FROM kinoteka WHERE naziv_kinoteka=?
+            """, [naziv])
+            id = cursor.fetchone()[0]
+        return id 
+    
+    @property
+    def id(self):
+        return self._id
+            
     @property
     def naziv_kinoteka(self):
         return self._naziv_kinoteka
@@ -84,6 +100,10 @@ class Kinoteka:
     @property
     def url_kinoteka(self):
         return self._url_kinoteka
+
+    @id.setter
+    def id(self, vrednost):
+        self._id = vrednost
 
     @naziv_kinoteka.setter
     def ime(self, vrednost):

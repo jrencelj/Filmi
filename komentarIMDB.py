@@ -7,10 +7,12 @@ import sqlite3 as dbapi
 
 class KomentarIMDB:
 
-    def __init__(self, imdb_id_komentar, imdb_id_uporabnik, naslov_komentarja, komentar, imdb_uporabnik, datum,
+    def __init__(self, id, imdb_id_komentar, imdb_id_uporabnik, imdb_id_vsebina, naslov_komentarja, komentar, imdb_uporabnik, datum,
                  se_strinja, se_ne_strinja, ocena):
+        self._id = id
         self._imdb_id_komentar = imdb_id_komentar
         self._imdb_id_uporabnik = imdb_id_uporabnik
+        self._imdb_id_vsebina = imdb_id_vsebina
         self._naslov_komentarja = naslov_komentarja
         self._komentar = komentar
         self._imdb_uporabnik = imdb_uporabnik
@@ -25,11 +27,27 @@ class KomentarIMDB:
         conn = dbapi.connect('filmi.db')
         with conn:
             conn.execute("""
-            INSERT OR IGNORE INTO imdb_komentar (imdb_id_komentar, imdb_id_uporabnik, naslov_komentarja, komentar,
+            INSERT OR IGNORE INTO imdb_komentar (imdb_id_komentar, imdb_id_uporabnik, imdb_id_vsebina, naslov_komentarja, komentar,
                     imdb_uporabnik, datum, se_strinja, se_ne_strinja, ocena)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """, [self._imdb_id_komentar, self._imdb_id_uporabnik, self._naslov_komentarja,
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, [self._imdb_id_komentar, self._imdb_id_uporabnik, self._imdb_id_vsebina, self._naslov_komentarja,
                   self._komentar, self._imdb_uporabnik, self._datum, self._se_strinja, self._se_ne_strinja, self._ocena])
+
+    @staticmethod
+    def pridobi_komentar_imdb_id(imdb_id_komentar):
+        """Pridobi id komentarja po imdb_id_komentar."""
+        conn = dbapi.connect("filmi.db")
+        with conn:
+            cursor = conn.execute("""
+            SELECT id FROM imdb_komentar
+            WHERE imdb_id_komentar=? 
+            """, [imdb_id_komentar])
+            podatek = cursor.fetchone()
+            return podatek[0]
+    
+    @property
+    def id(self):
+        return self._id
 
     @property
     def imdb_id_komentar(self):
@@ -38,6 +56,10 @@ class KomentarIMDB:
     @property
     def imdb_id_uporabnik(self):
         return self._imdb_id_uporabnik
+
+    @property
+    def imdb_id_vsebina(self):
+        return self._imdb_id_vsebina
 
     @property
     def naslov_komentarja(self):
@@ -67,6 +89,10 @@ class KomentarIMDB:
     def ocena(self):
         return self._ocena
 
+    @id.setter
+    def id(self, vrednost):
+        self._id = vrednost
+
     @imdb_id_komentar.setter
     def imdb_id_komentar(self, vrednost):
         self._imdb_id_komentar = vrednost
@@ -74,6 +100,10 @@ class KomentarIMDB:
     @imdb_id_uporabnik.setter
     def imdb_id_uporabnik(self, vrednost):
         self._imdb_id_uporabnik = vrednost
+
+    @imdb_id_vsebina.setter
+    def imdb_id_vsebina(self, vrednost):
+        self._imdb_id_vsebina = vrednost
 
     @naslov_komentarja.setter
     def naslov_komentarja(self, vrednost):

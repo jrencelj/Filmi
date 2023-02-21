@@ -2,7 +2,8 @@ import sqlite3 as dbapi
 
 
 class Oseba:
-    def __init__(self, ime_priimek, imdb_id_oseba, url_slika=None):
+    def __init__(self, id, ime_priimek, imdb_id_oseba, url_slika=None):
+        self._id = id
         self._ime_priimek = ime_priimek
         self._imdb_id_oseba = imdb_id_oseba
         self._url_slika = url_slika
@@ -16,14 +17,15 @@ class Oseba:
             VALUES (?, ?, ?)
             """, [self._ime_priimek, self._url_slika, self._imdb_id_oseba])
 
-    def pridobi_oseba_id(self):
+    @staticmethod
+    def pridobi_oseba_id(imdb_id_oseba):
         '''Pridobi id osebe iz baze'''
         conn = dbapi.connect('filmi.db')
         with conn:
             cursor = conn.execute("""
                 SELECT id FROM oseba
                 WHERE imdb_id_oseba=?
-            """, [self._imdb_id_oseba])
+            """, [imdb_id_oseba])
             id = cursor.fetchone()[0]
             return id
 
@@ -32,6 +34,9 @@ class Oseba:
         # TODO
         pass
 
+    @property
+    def id(self):
+        return self._id
     @property
     def ime_priimek(self):
         return self._ime_priimek
