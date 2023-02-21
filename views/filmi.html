@@ -1,14 +1,22 @@
 % rebase("osnova.html")
+<div class="bg-warning">
 
+<div class="container" style="background-color: white;">
+    <br>
+    <div class="row gy-3">
 % for film in filmi:
-
-<div class = "list-item">
-    <a href = "/filmi/{{ film.id }}" class="content-link">
-    <div class = "movie-title">
-        {{ film.naslov }}
-    </div>
-    </a>
-    <img src = "{{ film.url_slika }}" height = "300" width = "200">
-</div>
-
+        <div class="col-lg-3">
+            <div class="container">
+                <div class="card text-center">
+                    <img class="card-img-bottom rounded img-fluid" src="{{ film.url_slika }}">
+                    <div class="card-body">
+                        <a class="card-title text-center" href="/filmi/{{ film.id }}" style="text-decoration: none;">{{ film.naslov }}</a>
+                        <p style="font-style: italic;">{{ film.leto_izida }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
 % end
+    </div>
+</div>
+</div>
