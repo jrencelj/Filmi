@@ -80,6 +80,21 @@ class Film(Vsebina):
             ]
 
     @staticmethod
+    def pridobi_predloge_za_film(naslov1, naslov2, naslov3):
+        """Pridobi predloge za film glede na všečne filme."""
+        conn = dbapi.connect("filmi.db")
+        with conn:
+            cursor = conn.execute("""SELECT DISTINCT t1.* FROM vsebina AS t1 INNER JOIN vsebina_imdb_komentar AS t2 ON t1.id = t2.vsebina_id INNER JOIN imdb_komentar AS t3 ON t2.imdb_komentar_id = t3.id
+            WHERE t3.imdb_id_uporabnik IN (SELECT t3.imdb_id_uporabnik FROM vsebina AS t1 INNER JOIN vsebina_imdb_komentar AS t2 ON t1.id = t2.vsebina_id INNER JOIN imdb_komentar AS t3 ON t2.imdb_komentar_id = t3.id
+            WHERE (t1.naslov=? OR t1.naslov = ? OR t1.naslov=?) AND t3.ocena = 10) AND t3.ocena = 10 AND vsebina_tip_id = 1 AND t1.naslov NOT IN (?,?,?)  GROUP BY t1.naslov HAVING COUNT(*) > 150;
+            """, [naslov1, naslov2, naslov3, naslov1, naslov2, naslov3])
+            podatki = list(cursor.fetchall())
+            return [
+                Vsebina(podatek[0], podatek[1], podatek[2], podatek[4], podatek[5], podatek[6], podatek[7], podatek[11])
+                for podatek in podatki
+            ]
+
+    @staticmethod
     def pridobi_komentarje_po_id_film(id):
         conn = dbapi.connect("filmi.db")
         with conn:
