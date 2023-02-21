@@ -1,0 +1,75 @@
+% rebase("osnova.html", uporabnisko_ime=uporabnisko_ime)
+<br>
+
+<div class="container">
+    <div class="row justify-content-md-center text-center">
+        <div class="col-8">
+            <h1>Choose 3 TV shows that you like</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <form action="/generator_serija" method="POST">
+                <div class="row justify-content-md-center text-center">
+                    <div class="col-6">
+                    <input class="form-control shadow-none" list="serije" id="izberi_serija1" name="izberi_serija1" placeholder="Search">
+                    <datalist id="serije">
+                        % for serija in serije:
+                        <option value="{{ serija.naslov }}">
+                        % end
+                    </datalist>
+                    </div>
+                </div>
+                <br>
+                <div class="row justify-content-md-center text-center">
+                    <div class="col-6">
+                    <input class="form-control shadow-none" list="serije" id="izberi_serija2" name="izberi_serija2" placeholder="Search">
+                    <datalist id="serije">
+                        % for serija in serije:
+                        <option value="{{ serija.naslov }}">
+                        % end
+                    </datalist>
+                    </div>
+                </div>
+                <br>
+                <div class="row justify-content-md-center text-center">
+                    <div class="col-6">
+                    <input class="form-control shadow-none" list="serije" id="izberi_serija3" name="izberi_serija3" placeholder="Search">
+                    <datalist id="serije">
+                        % for serija in serije:
+                        <option value="{{ serija.naslov }}">
+                        % end
+                    </datalist>
+                    </div>
+                </div>
+                <br>
+                <div class="row justify-content-md-center text-center">
+                    <div class="col-1">
+                        <button class="btn btn-warning" id="dodaj_serija" type="submit">Recommend</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br>
+% for predlog in predlogi:
+    <div class="row justify-content-center g-4">
+        <div class="col-6">
+            <div class="card">
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <img src="{{ predlog.url_slika }}" class="img-fluid rounded-start">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <a href="/serije/{{ predlog.id }}" style="text-decoration: none; color: black;">
+                                <h5 class="card-title">{{ predlog.naslov }}</h5>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+% end
+</div>
