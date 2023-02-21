@@ -5,7 +5,9 @@ import json
 from komentarIMDB import KomentarIMDB
 import os
 from vsebina_tip import Vsebina_Tip
-
+import sqlite3 as dbapi
+from oseba import Oseba
+from kinoteka import Kinoteka
 
 class Vsebina:
     def __init__(self, id, naslov, dolzina, url_slika, imdb_id_vsebina, opis,
@@ -15,10 +17,7 @@ class Vsebina:
         self._imdb_id_vsebina = imdb_id_vsebina
         self._dolzina = dolzina
         self._url_slika = url_slika
-        if not isinstance(vsebina_tip, Vsebina_Tip):
-            raise Exception(f'{vsebina_tip} ni objekt razreda Vsebina_Tip')
-        else:
-            self._vsebina_tip = vsebina_tip
+        self._vsebina_tip = vsebina_tip
         self._opis = opis
         self._datum_prvega_predvajanja = datum_prvega_predvajanja
 
@@ -115,7 +114,7 @@ class Vsebina:
     def pridobi_komentarje(self):
         '''Prejme objekt razreda Vsebina vrne vse komentarje za dani film v obliki slovarja.'''
         vsebina = dict()
-        url = f'https://www.imdb.com/title/{self._imdb_id}/reviews'
+        url = f'https://www.imdb.com/title/{self._imdb_id_vsebina}/reviews'
         print(url)
         odziv = Bralnik.pridobi_html(url)
         vsebina_strani = BeautifulSoup(odziv, 'html.parser')
@@ -149,7 +148,7 @@ class Vsebina:
                     div_komentar)
                 komentarji[komentar_imdb_id] = komentar_podatki
             naslednji_url = Vsebina.pridobi_naslednji_seznam_komentarjev(
-                vsebina_strani, self._imdb_id)
+                vsebina_strani, self._imdb_id_vsebina)
             print(naslednji_url)
             if naslednji_url is None:
                 zastavica = True
@@ -158,7 +157,10 @@ class Vsebina:
                 vsebina_strani = BeautifulSoup(odziv, 'html.parser')
                 div_komentarji = vsebina_strani.find_all(
                     'div', class_='review-container')
-        vsebina[self._naslov] = komentarji
+        vsebina['ImdbID'] = self.imdb_id_vsebina
+        # vsebina[self._naslov] = komentarji
+        vsebina['Title'] = self._naslov
+        vsebina['Comments'] = komentarji
         return vsebina
 
     def shrani_komentarje_v_json(self):
@@ -181,8 +183,8 @@ class Vsebina:
         with open('data/film/filmi.json', 'r') as f:
             filmi = json.load(f)
         for naslov, podatki in filmi.items():
-            vsebina = Vsebina(
-                naslov, podatki['imdbID'], None, None, None, None, None, None, None, None)
+            vsebina = Vsebina(None,
+                naslov, None, None, podatki['imdbID'], None, None, None)
             ime_datoteke = Vsebina.preoblikuj_v_ime(naslov)
             if os.path.exists(f'data/komentar/komentar_film/{ime_datoteke}.json'):
                 continue
@@ -196,11 +198,83 @@ class Vsebina:
         with open('data/serija/serije.json', 'r') as f:
             serije = json.load(f)
         for naslov, podatki in serije.items():
-            vsebina = Vsebina(
-                naslov, podatki['imdbID'], None, None, None, None, None, None, None, None)
+            vsebina = Vsebina(None,
+                naslov, None, None, podatki['imdbID'], None, None, None)
             ime_datoteke = Vsebina.preoblikuj_v_ime(naslov)
             if os.path.exists(f'data/komentar/komentar_serija/{ime_datoteke}.json'):
                 continue
             else:
                 print(naslov)
                 vsebina.shrani_komentarje_serij_v_json()
+
+    @staticmethod
+    def pridobi_id_vsebina_po_imdb_id_vsebina(imdb_id_vsebina):
+        """Pridobi id vsebine iz tabele vsebina po imdb_id_vsebina."""
+        conn = dbapi.connect("filmi.db")
+        with conn:
+            cursor = conn.execute("""
+                SELECT id FROM vsebina WHERE imdb_id_vsebina=?
+            """, [imdb_id_vsebina])
+            podatek = cursor.fetchone()
+        return podatek[0]
+    
+    @staticmethod
+    def pridobi_reziserje_za_vsebino(id):
+        """Pridobi igralce ki so nastopali v vsebini podani z id."""
+        conn = dbapi.connect("filmi.db")
+        with conn:
+            cursor = conn.execute("""
+                SELECT t3.* FROM vsebina AS t1 INNER JOIN vsebina_oseba AS t2 ON t1.id = t2.vsebina_id INNER JOIN oseba AS t3 ON t2.oseba_id = t3.id
+                WHERE t2.vloga_tip_id = 2 AND t1.id=?
+            """, [id])
+            podatki = cursor.fetchall()
+        return [
+            Oseba(podatek[0], podatek[1], podatek[3], podatek[2])
+            for podatek in podatki
+        ]
+
+    @staticmethod
+    def pridobi_igralce_za_vsebino(id):
+        """Pridobi igralce ki so nastopali v vsebini podani z id."""
+        conn = dbapi.connect("filmi.db")
+        with conn:
+            cursor = conn.execute("""
+                SELECT t3.*, t2.vloga FROM vsebina AS t1 INNER JOIN vsebina_oseba AS t2 ON t1.id = t2.vsebina_id INNER JOIN oseba AS t3 ON t2.oseba_id = t3.id
+                WHERE t2.vloga_tip_id = 1 AND t1.id=?
+            """, [id])
+            podatki = cursor.fetchall()
+        return [
+            [Oseba(podatek[0], podatek[1], podatek[3], podatek[2]), podatek[4]]
+            for podatek in podatki
+        ]
+    
+    @staticmethod
+    def pridobi_id_za_vsebino_po_naslovu(naslov):
+        conn = dbapi.connect("filmi.db")
+        with conn:
+            cursor = conn.execute("""
+                SELECT id FROM vsebina WHERE naslov=?
+            """, [naslov])
+            podatek = cursor.fetchone()
+            id = None if podatek is None else podatek[0]
+        return id
+    
+    @staticmethod
+    def pridobi_kinoteke_za_vsebino(id):
+        """Pridobi kinoteke v katerih je vsebina podana z id na voljo."""
+        conn = dbapi.connect("filmi.db")
+        with conn:
+            cursor = conn.execute("""
+                SELECT DISTINCT t3.* FROM vsebina AS t1 INNER JOIN vsebina_kinoteka AS t2 ON t1.id = t2.vsebina_id 
+                INNER JOIN kinoteka AS t3 ON t2.kinoteka_id = t3.id WHERE t1.id=?;
+            """, [id])
+            podatki = cursor.fetchall()
+            return [
+                Kinoteka(podatek[0], podatek[1], podatek[2])
+                for podatek in podatki
+            ]
+
+# PRIDOBIVANJE KOMENTARJEV
+if __name__ == '__main__':
+    Vsebina.shrani_komentarje_vse_serije()
+    Vsebina.shrani_komentarje_vsi_filmi()

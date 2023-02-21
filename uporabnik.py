@@ -3,11 +3,13 @@ import sqlite3 as dbapi
 
 
 class Uporabnik:
-    def __init__(self, uporabnisko_ime, e_naslov, datum_rojstva, geslo, uporabnik_tip):
+    def __init__(self, id, uporabnisko_ime, e_naslov, datum_rojstva, geslo, sol, uporabnik_tip):
+        self._id = id
         self._uporabnisko_ime = uporabnisko_ime
         self._e_naslov = e_naslov
         self._datum_rojstva = datum_rojstva
         self._geslo = geslo
+        self._sol = sol
         if not isinstance(uporabnik_tip, Uporabnik_Tip):
             raise Exception(f'{uporabnik_tip} ni objekt razreda Uporabnik_Tip')
         else:
@@ -15,12 +17,17 @@ class Uporabnik:
 
     def shrani_uporabnik(self):
         '''Shrani uporabnika v bazo.'''
-        # TODO
+        conn = dbapi.connect("filmi.db")
+        with conn:
+            conn.execute("""
+                INSERT INTO uporabnik (uporabnisko_ime, e_naslov, datum_rojstva, geslo, sol, uporabnik_tip_id)
+                VALUES (?, ?, ?, ?, ?, ?)
+            """, [self.uporabnisko_ime, self.e_naslov, self.datum_rojstva, self.geslo, self.sol, self.uporabnik_tip.pridobi_uporabnik_tip_id()])
         pass
 
     def pridobi_uporabnik_id(self):
         '''Pridobi id uporabnika iz baze'''
-        conn = dbapi.connect('filmi.db')
+        conn = dbapi.connect("filmi.db")
         with conn:
             cursor = conn.execute("""
                 SELECT id FROM uporabnik
@@ -28,6 +35,31 @@ class Uporabnik:
             """, [self._uporabnisko_ime])
             id = cursor.fetchone()[0]
             return id
+    
+    @staticmethod
+    def pridobi_uporabnika_po_username(username):
+        """Pridobi uporabnika po username."""
+        conn = dbapi.connect("filmi.db")
+        with conn:
+            cursor = conn.execute("""
+                SELECT * FROM
+            """)
+
+    @property
+    def id(self):
+        return self._id
+
+    @id.setter
+    def id(self, vrednost):
+        self._id = vrednost
+
+    @property
+    def sol(self):
+        return self._sol
+
+    @sol.setter
+    def sol(self, vrednost):
+        self._sol = vrednost
 
     @property
     def uporabnisko_ime(self):
