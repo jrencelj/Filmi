@@ -1,0 +1,76 @@
+% rebase("osnova.html", uporabnisko_ime = uporabnisko_ime)
+<br>
+
+<div class="container">
+    <div class="row justify-content-md-center text-center">
+        <div class="col-8">
+            <h1>Choose 3 movies that you like</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <form action="/generator_film" method="POST">
+                <div class="row justify-content-md-center text-center">
+                    <div class="col-6">
+                    <input class="form-control shadow-none" list="filmi" id="izberi_film1" name="izberi_film1" placeholder="Search">
+                    <datalist id="filmi">
+                        % for film in filmi:
+                        <option value="{{ film.naslov }}">
+                        % end
+                    </datalist>
+                    </div>
+                </div>
+                <br>
+                <div class="row justify-content-md-center text-center">
+                    <div class="col-6">
+                    <input class="form-control shadow-none" list="filmi" id="izberi_film2" name="izberi_film2" placeholder="Search">
+                    <datalist id="filmi">
+                        % for film in filmi:
+                        <option value="{{ film.naslov }}">
+                        % end
+                    </datalist>
+                    </div>
+                </div>
+                <br>
+                <div class="row justify-content-md-center text-center">
+                    <div class="col-6">
+                    <input class="form-control shadow-none" list="filmi" id="izberi_film3" name="izberi_film3" placeholder="Search">
+                    <datalist id="filmi">
+                        % for film in filmi:
+                        <option value="{{ film.naslov }}">
+                        % end
+                    </datalist>
+                    </div>
+                </div>
+                <br>
+                <div class="row justify-content-md-center text-center">
+                    <div class="col-1">
+                        <button class="btn btn-warning" id="dodaj_film" type="submit">Recommend</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br>
+% for predlog in predlogi:
+    <div class="row justify-content-center g-4">
+        <div class="col-6">
+            <div class="card">
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <img src="{{ predlog.url_slika }}" class="img-fluid rounded-start">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <a href="/filmi/{{ predlog.id }}" style="text-decoration: none; color: black;">
+                                <h5 class="card-title">{{ predlog.naslov }}</h5>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+% end
+</div>
+
