@@ -10,10 +10,7 @@ class Uporabnik:
         self._datum_rojstva = datum_rojstva
         self._geslo = geslo
         self._sol = sol
-        if not isinstance(uporabnik_tip, Uporabnik_Tip):
-            raise Exception(f'{uporabnik_tip} ni objekt razreda Uporabnik_Tip')
-        else:
-            self._uporabnik_tip = uporabnik_tip
+        self._uporabnik_tip = uporabnik_tip
 
     def shrani_uporabnik(self):
         '''Shrani uporabnika v bazo.'''
@@ -42,8 +39,23 @@ class Uporabnik:
         conn = dbapi.connect("filmi.db")
         with conn:
             cursor = conn.execute("""
-                SELECT * FROM
-            """)
+                SELECT * FROM uporabnik WHERE uporabnisko_ime=?
+            """, [username])
+            podatek = cursor.fetchone()
+        return Uporabnik(podatek[0], podatek[1], podatek[2], podatek[3], podatek[4], podatek[5], podatek[6])
+    
+    @staticmethod
+    def je_uporabnik(username):
+        """Preveri ali uporabnik že obstaja."""
+        conn = dbapi.connect("filmi.db")
+        with conn:
+            cursor = conn.execute("""
+                SELECT * FROM uporabnik WHERE uporabnisko_ime=?
+            """, [username])
+            podatek = cursor.fetchone()
+            if podatek:
+                return True
+        return False
 
     @property
     def id(self):
