@@ -138,31 +138,34 @@ def pridobi_vse_epizode(imdb_id, zacetek) -> dict:
 
 
 if __name__ == '__main__':
-    print('HELLO')
-    with open('data/serija/serije.json', 'r') as f:
-        serije = json.load(f)
-    for naslov_serija, podatki_serija in serije.items():
-        print(naslov_serija)
-        dodaj_reziserje(naslov_serija)
+    # with open('data/serija/serije.json', 'r') as f:
+    #     serije = json.load(f)
+    # for naslov_serija, podatki_serija in serije.items():
+    #     print(naslov_serija)
+    #     dodaj_reziserje(naslov_serija)
 
     # with open('serije.json', 'r') as f:
     #    serije = json.load(f)
-#
-    #
-    #epizode = dict()
+    
+    # epizode = dict()
     # for naslov, podatki in serije.items():
     #    print(naslov)
     #    leto_zacetka_predvanjanja = None if podatki['Released'] == 'N/A' else podatki['Released'].split()[-1]
     #    leto_zacetka = None if podatki['Year'] == 'N/A' else podatki['Year'][0:4]
     #    print(leto_zacetka)
     #    print(leto_zacetka_predvanjanja)
-    #    imdb_id = podatki['imdbID']
+    #    imdb_id_vsebina = podatki['imdbID']
     #    # Včasih se leti ne ujemata zato pogledamo oba in vrnemo tistega, ki vrne več epizod.
-    #    ep_leto_zacetka = dict() if leto_zacetka == None else pridobi_vse_epizode(imdb_id, leto_zacetka)
-    #    ep_leto_zacetka_predvajanja = dict() if leto_zacetka_predvanjanja == None else pridobi_vse_epizode(imdb_id, leto_zacetka_predvanjanja)
+    #    ep_leto_zacetka = dict() if leto_zacetka == None else pridobi_vse_epizode(imdb_id_vsebina, leto_zacetka)
+    #    ep_leto_zacetka_predvajanja = dict() if leto_zacetka_predvanjanja == None else pridobi_vse_epizode(imdb_id_vsebina, leto_zacetka_predvanjanja)
     #    ep = ep_leto_zacetka if len(ep_leto_zacetka) > len(ep_leto_zacetka_predvajanja) else ep_leto_zacetka_predvajanja
-    #    epizode[naslov] = ep
-    #    print(ep)
-#
-    # with open('epizode.json', 'w', encoding = 'utf-8') as f:
+    #    serija = dict()
+    #    serija['Title'] = naslov
+    #    serija['imdbID'] = imdb_id_vsebina
+    #    serija['Episodes'] = ep
+    #    epizode[naslov] = serija
+    #    print(serija)
+
+    # with open('data/epizode/epizode.json', 'w', encoding = 'utf-8') as f:
     #    json.dump(epizode, f)
+    pass
