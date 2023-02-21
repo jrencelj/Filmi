@@ -1,4 +1,182 @@
+<!--
 % rebase("osnova.html")
 <h4>{{ serija.naslov }}</h4>
 <img src = "{{ serija.url_slika }}" height = "300" width = "200">
 <p>{{ serija.opis }}</p>
+-->
+
+% rebase("osnova.html")
+<ul class="nav justify-content-center bg-warning">
+  <!--
+  <li class="nav-item">
+    <button class="btn" data-bs-toggle="collapse" data-bs-target="#komentarji_imdb" aria-expanded="false" aria-controls="komentarji_imdb">IMDB Comments</button>
+  </li>
+  -->
+  <li class="nav-item">
+    <button class="btn" data-bs-toggle="collapse" data-bs-target="#directors" aria-expanded="false" aria-controls="directors">Directors</button>
+  </li>
+  <li class="nav-item">
+    <button class="btn" data-bs-toggle="collapse" data-bs-target="#actors" aria-expanded="false" aria-controls="actors">Actors</button>
+  </li>
+  <li class="nav-item">
+    <button class="btn" data-bs-toggle="collapse" data-bs-target="#uporabnik_komentar" aria-expanded="false" aria-controls="uporabnik_komentar">Comments</button>
+  </li>
+</ul>
+<br>
+<div class="container">
+  <div class="row g-3">
+    <div class="col-4">
+      <div class="container">
+        <img src = "{{ serija.url_slika }}">
+      </div>
+    </div>
+    <div class="col-8">
+      <div class="row">
+        <div class="col">
+          <h1>{{ serija.naslov }}</h1> 
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <p style="font-size: large;">{{ serija.opis }}</p>
+        </div>
+      </div>
+      <div class="row">
+        % for kinoteka in kinoteke:
+        <div class="col-1">
+          <a href="{{ kinoteka.url_kinoteka }}">
+            <img style="width: 50px; height: 50px; border-radius: 50%; vertical-align: middle;" src="/static/{{ kinoteka.naziv_kinoteka }}.jpeg">
+          </a>
+        </div>
+        % end
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+
+
+<br>
+<div class="container">
+  <!--
+  <div id="komentarji_imdb" class="carousel slide collapse" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#komentarji_imdb" data-bs-slide-to="0" class="active"></button>
+      <button type="button" data-bs-target="#komentarji_imdb" data-bs-slide-to="1"></button>
+      <button type="button" data-bs-target="#komentarji_imdb" data-bs-slide-to="2"></button>
+    </div>
+    <div class="carousel-inner">
+      
+      <div class="carousel-item active">
+        <div class="container">
+          <div class="card" style="width: 50rem;">
+            <div class="card-body">
+              <h2 class="card-title">
+                {{ komentarji_serije[0].naslov_komentarja }}
+              </h2>
+              <p class="card-text">
+                {{ komentarji_serije[0].komentar }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+
+      % for komentar_serija in komentarji_serije[1:]:
+      <div class="carousel-item">
+        <div class="container">
+          <div class="card" style="width: 50rem;">
+            <div class="card-body">
+              <h2 class="card-title">
+                {{ komentar_serija.naslov_komentarja }}
+              </h2>
+              <p class="card-text">
+                {{ komentar_serija.komentar }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      % end
+    </div>
+    -->
+    
+    <button class="carousel-control-prev" type="button" data-bs-target="#komentarji_imdb" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#komentarji_imdb" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </button>
+  </div>
+
+  <div class="container collapse" id="uporabnik_komentar">
+    <form method="POST" action="/do_komentar">
+      <div class="form-floating">
+        <textarea id="comment" class="form-control" placeholder="Comment" rows="4" style="height:100%;"></textarea>
+        <label for="comment">Comment</label>
+      </div>
+      <br>
+      <label for="ocena" class="form-label">Ocena</label>
+      <div class="row">
+        <div class="col-10">
+          <input type="range" class="form-range" min="0" max="10" step="1" id="ocena" oninput="vrednost.value=ocena.value">
+        </div>
+        <div class="col-2">
+          <output id="vrednost" for="ocena">5</output>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-warning">Comment</button>
+    </form>
+  </div>
+</div>
+
+
+
+<div class="container">
+  <table class="table table-striped collapse" id="actors">
+    <thead>
+      <tr>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Role</th>
+      </tr>
+      <tbody>
+        % for igralec in igralci:
+        <tr>
+          % if igralec[0].url_slika is None:
+          <td><img style="width: 50px; height: 50px; border-radius: 50%; vertical-align: middle;" src = "/static/default_avatar.png"></td>
+          % else:
+          <td><img style="width: 50px; height: 50px; border-radius: 50%; vertical-align: middle;" src = "{{ igralec[0].url_slika }}"></td>
+          % end
+          <td>{{ igralec[0].ime_priimek }}</td>
+          <td>{{ igralec[1] }}</td>
+        </tr>
+        % end
+      </tbody>
+    </thead>
+  </table>
+</div>
+
+<div class="container">
+  <table class="table table-striped collapse" id="directors">
+    <thead>
+      <tr>
+        <th>Image</th>
+        <th>Name</th>
+      </tr>
+      <tbody>
+        % for reziser in reziserji:
+        <tr>
+          % if reziser.url_slika is None:
+          <td><img style="width: 50px; height: 50px; border-radius: 50%; vertical-align: middle;" src = "/static/default_avatar.png"></td>
+          % else:
+          <td><img style="width: 50px; height: 50px; border-radius: 50%; vertical-align: middle;" src = "{{ reziser.url_slika }}"></td>
+          % end
+          <td>{{ reziser.ime_priimek }}</td>
+        </tr>
+        % end
+      </tbody>
+    </thead>
+  </table>
+</div>
