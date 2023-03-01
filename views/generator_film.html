@@ -52,25 +52,19 @@
         </div>
     </div>
     <br>
-% for predlog in predlogi:
-    <div class="row justify-content-center g-4">
-        <div class="col-6">
-            <div class="card">
-                <div class="row g-4">
-                    <div class="col-md-4">
-                        <img src="{{ predlog.url_slika }}" class="img-fluid rounded-start">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <a href="/filmi/{{ predlog.id }}" style="text-decoration: none; color: black;">
-                                <h5 class="card-title">{{ predlog.naslov }}</h5>
-                            </a>
+    <div class="row gy-3">
+        % for predlog in predlogi:
+                <div class="col-lg-3">
+                    <div class="container">
+                        <div class="card text-center">
+                            <img class="card-img-bottom rounded img-fluid" src="{{ predlog.url_slika }}">
+                            <div class="card-body">
+                                <a class="card-title text-center" href="/filmi/podrobno/{{ predlog.id }}" style="text-decoration: none;">{{ predlog.naslov }}</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+        % end
     </div>
-% end
 </div>
 
