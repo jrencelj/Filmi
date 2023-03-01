@@ -1,6 +1,5 @@
 import sqlite3 as dbapi
 
-
 class Oseba:
     def __init__(self, id, ime_priimek, imdb_id_oseba, url_slika=None):
         self._id = id
@@ -29,10 +28,18 @@ class Oseba:
             id = cursor.fetchone()[0]
             return id
 
-    def pridobi_oseba():
-        '''Pridobi osebo iz baze.'''
-        # TODO
-        pass
+    
+    
+    @staticmethod
+    def pridobi_oseba_po_id(id):
+        """Pridobi osebo po id."""
+        conn = dbapi.connect("filmi.db")
+        with conn:
+            cursor = conn.execute("""
+                SELECT * FROM oseba WHERE id = ?;
+            """, [id])
+            podatki = cursor.fetchone()
+        return Oseba(podatki[0], podatki[1], podatki[3], podatki[2])
 
     @property
     def id(self):
