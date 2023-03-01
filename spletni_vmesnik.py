@@ -5,6 +5,10 @@ from vsebina import Vsebina
 from uporabnik import Uporabnik
 from uporabnik_tip import Uporabnik_Tip
 import hashlib
+import time
+from komentar import Komentar
+from vsebina_komentar import Vsebina_Komentar
+from oseba import Oseba
 
 def hash_geslo(geslo):
     tekst = geslo.encode("utf-8")
@@ -64,7 +68,7 @@ def do_registracija():
     uporabnisko_ime = bottle.request.forms.getunicode("username")
     pass1 = bottle.request.forms.getunicode("pass1")
     pass2 = bottle.request.forms.getunicode("pass2")
-    if pass1 == pass2:
+    if pass1 == pass2 and not Uporabnik.je_uporabnik(uporabnisko_ime) and not Uporabnik.email_obstaja(email):
         sol = "sol"
         geslo = hash_geslo(pass1 + sol)
         datum_rojstva = bottle.request.forms.getunicode("bday")
@@ -119,24 +123,58 @@ def serije():
     serije = Serija.pridobi_vse_serije()
     return bottle.template('serije.html', serije=serije, uporabnisko_ime = pridobi_uporabnika())
 
-@bottle.route("/filmi/<id:int>")
+@bottle.post("/filmi/podrobno/<id:int>")
+def do_komentar(id):
+    ocena = bottle.request.forms.getunicode("ocena")
+    besedilo_komentar = bottle.request.forms.getunicode("comment")
+    cas = time.time()
+    uporabnik_id = Uporabnik.pridobi_uporabnika_po_username(pridobi_uporabnika()).id
+    komentar = Komentar(None, ocena, cas, None, besedilo_komentar, uporabnik_id)
+    komentar.shrani_komentar()
+    id_komentar = Komentar.pridobi_id_komentar(uporabnik_id, besedilo_komentar, cas, ocena)
+    Vsebina_Komentar(None, id, id_komentar).shrani_vsebina_komentar()
+    bottle.redirect(f'/filmi/podrobno/{id}')
+
+    
+
+@bottle.get("/filmi/podrobno/<id:int>")
 def podrobno_film(id):
     film = Film.pridobi_film_z_id(id)
     komentarji_filma = Film.pridobi_komentarje_po_id_film(id)
     reziserji = Vsebina.pridobi_reziserje_za_vsebino(id)
     igralci = Vsebina.pridobi_igralce_za_vsebino(id)
     kinoteke = Vsebina.pridobi_kinoteke_za_vsebino(id)
+    vneseni_komentarji = Komentar.pridobi_komentarje_za_vsebino(id)
     return bottle.template('podrobno_film.html', film = film, komentarji_filma = komentarji_filma, reziserji = reziserji, igralci = igralci, kinoteke=kinoteke,
-                           uporabnisko_ime = pridobi_uporabnika())
+                           uporabnisko_ime = pridobi_uporabnika(), vneseni_komentarji = vneseni_komentarji)
 
-@bottle.route("/serije/<id:int>")
+@bottle.post("/serije/podrobno/<id:int>")
+def do_komentar(id):
+    ocena = bottle.request.forms.getunicode("ocena")
+    besedilo_komentar = bottle.request.forms.getunicode("comment")
+    cas = time.time()
+    uporabnik_id = Uporabnik.pridobi_uporabnika_po_username(pridobi_uporabnika()).id
+    komentar = Komentar(None, ocena, cas, None, besedilo_komentar, uporabnik_id)
+    komentar.shrani_komentar()
+    id_komentar = Komentar.pridobi_id_komentar(uporabnik_id, besedilo_komentar, cas, ocena)
+    Vsebina_Komentar(None, id, id_komentar).shrani_vsebina_komentar()
+    bottle.redirect(f'/serije/podrobno/{id}')
+
+@bottle.get("/serije/podrobno/<id:int>")
 def podrobno_serija(id):
     serija = Serija.pridobi_serijo_z_id(id)
     komentarji_serije = Serija.pridobi_komentarje_po_id_serija(id)
     reziserji = Vsebina.pridobi_reziserje_za_vsebino(id)
     igralci = Vsebina.pridobi_igralce_za_vsebino(id)
     kinoteke = Vsebina.pridobi_kinoteke_za_vsebino(id)
+    vneseni_komentarji = Komentar.pridobi_komentarje_za_vsebino(id)
     return bottle.template('podrobno_serija.html', serija=serija, komentarji_serije = komentarji_serije, reziserji = reziserji, igralci = igralci,
-                           kinoteke = kinoteke, uporabnisko_ime = pridobi_uporabnika())
+                           kinoteke = kinoteke, uporabnisko_ime = pridobi_uporabnika(), vneseni_komentarji = vneseni_komentarji)
+
+@bottle.route("/oseba/<id:int>")
+def oseba(id):
+    podatki_oseba = Oseba.pridobi_oseba_po_id(id)
+    vsebine_osebe = Vsebina.pridobi_vsebine_za_igralca(id)
+    return bottle.template('oseba.html', podatki_oseba = podatki_oseba, vsebine_osebe = vsebine_osebe, uporabnisko_ime = pridobi_uporabnika())
 
 bottle.run(debug=True, reloader=True)
