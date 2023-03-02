@@ -10,35 +10,43 @@ from komentar import Komentar
 from vsebina_komentar import Vsebina_Komentar
 from oseba import Oseba
 
+
 def hash_geslo(geslo):
     tekst = geslo.encode("utf-8")
     d = hashlib.sha256(tekst)
     hash = d.hexdigest()
     return hash
 
+
 def pridobi_uporabnika():
     """Kdo je uporabnik."""
-    uporabnisko_ime = bottle.request.get_cookie('uporabnisko_ime', secret='skrivnost')
+    uporabnisko_ime = bottle.request.get_cookie(
+        'uporabnisko_ime', secret='skrivnost')
     if uporabnisko_ime is not None:
         return uporabnisko_ime
     else:
         return None
 
+
 @bottle.route('/<filename>.css')
 def stylesheets(filename):
     return bottle.static_file(f'{filename}.css', root='static')
+
 
 @bottle.route('/static/<filename>.jpeg')
 def jpeg(filename):
     return bottle.static_file(f'{filename}.jpeg', root='static')
 
+
 @bottle.route('/static/default_avatar.png')
 def default_avatar():
     return bottle.static_file('default_avatar.png', root='static')
 
+
 @bottle.route("/")
 def glavna_stran():
-    return bottle.template('index.html', root='Projekt', uporabnisko_ime = pridobi_uporabnika())
+    return bottle.template('index.html', root='Projekt', uporabnisko_ime=pridobi_uporabnika())
+
 
 @bottle.post('/do_prijava')
 def do_prijava():
@@ -47,20 +55,20 @@ def do_prijava():
     if Uporabnik.je_uporabnik(uporabnisko_ime):
         uporabnik = Uporabnik.pridobi_uporabnika_po_username(uporabnisko_ime)
         if hash_geslo(geslo + uporabnik.sol) == uporabnik.geslo:
-            bottle.response.set_cookie("uporabnisko_ime", uporabnisko_ime, path='/', secret='skrivnost')
+            bottle.response.set_cookie(
+                "uporabnisko_ime", uporabnisko_ime, path='/', secret='skrivnost')
             bottle.redirect('/')
         else:
-            return bottle.template('index.html', uporabnisko_ime = pridobi_uporabnika())
+            return bottle.template('index.html', uporabnisko_ime=pridobi_uporabnika())
     else:
-        return bottle.template('index.html', uporabnisko_ime = pridobi_uporabnika())
-    
-    
+        return bottle.template('index.html', uporabnisko_ime=pridobi_uporabnika())
 
 
 @bottle.route("/odjava")
 def odjava():
     bottle.response.delete_cookie('uporabnisko_ime')
     bottle.redirect('/')
+
 
 @bottle.post('/do_registracija')
 def do_registracija():
@@ -72,32 +80,38 @@ def do_registracija():
         sol = "sol"
         geslo = hash_geslo(pass1 + sol)
         datum_rojstva = bottle.request.forms.getunicode("bday")
-        uporabnik = Uporabnik(None, uporabnisko_ime, email, datum_rojstva, geslo, sol, Uporabnik_Tip("U", "uporabnik", None))
+        uporabnik = Uporabnik(None, uporabnisko_ime, email, datum_rojstva,
+                              geslo, sol, Uporabnik_Tip("U", "uporabnik", None))
         uporabnik.shrani_uporabnik()
-        return bottle.template('index.html', uporabnisko_ime = pridobi_uporabnika())
+        return bottle.template('index.html', uporabnisko_ime=pridobi_uporabnika())
     else:
-        return bottle.template('index.html', uporabnisko_ime = pridobi_uporabnika(), napake = 'Gesli se ne ujemata.')
+        return bottle.template('index.html', uporabnisko_ime=pridobi_uporabnika(), napake='Gesli se ne ujemata.')
+
 
 @bottle.route("/registracija")
 def registracija():
     return bottle.template('registracija.html')
 
-@bottle.route("/filmi")
-def filmi():
+
+@bottle.route("/filmi/<stran:int>")
+def filmi(stran):
     filmi = Film.pridobi_vse_filme()
-    return bottle.template('filmi.html', filmi=filmi, uporabnisko_ime = pridobi_uporabnika())
+    return bottle.template('filmi.html', filmi=filmi, stran=stran, uporabnisko_ime=pridobi_uporabnika())
+
 
 @bottle.route("/generator_film")
 def generator_film():
     filmi = Film.pridobi_vse_filme()
     predlogi = []
-    return bottle.template('generator_film.html', filmi=filmi, predlogi=predlogi, uporabnisko_ime = pridobi_uporabnika())
+    return bottle.template('generator_film.html', filmi=filmi, predlogi=predlogi, uporabnisko_ime=pridobi_uporabnika())
+
 
 @bottle.route("/generator_serija")
 def generator_serija():
     serije = Serija.pridobi_vse_serije()
     predlogi = []
-    return bottle.template('generator_serija.html', serije=serije, predlogi=predlogi, uporabnisko_ime = pridobi_uporabnika())
+    return bottle.template('generator_serija.html', serije=serije, predlogi=predlogi, uporabnisko_ime=pridobi_uporabnika())
+
 
 @bottle.post("/generator_serija")
 def do_predlaga_serija():
@@ -106,7 +120,7 @@ def do_predlaga_serija():
     serija3 = bottle.request.forms.getunicode("izberi_serija3")
     serije = Serija.pridobi_vse_serije()
     predlogi = Serija.pridobi_predloge_za_serijo(serija1, serija2, serija3)
-    return bottle.template("generator_serija", serije=serije, predlogi = predlogi, uporabnisko_ime = pridobi_uporabnika())
+    return bottle.template("generator_serija", serije=serije, predlogi=predlogi, uporabnisko_ime=pridobi_uporabnika())
 
 
 @bottle.post("/generator_film")
@@ -116,26 +130,30 @@ def do_predlaga_filmi():
     film3 = bottle.request.forms.getunicode("izberi_film3")
     filmi = Film.pridobi_vse_filme()
     predlogi = Film.pridobi_predloge_za_film(film1, film2, film3)
-    return bottle.template("generator_film", filmi=filmi, predlogi = predlogi, uporabnisko_ime = pridobi_uporabnika())
+    return bottle.template("generator_film", filmi=filmi, predlogi=predlogi, uporabnisko_ime=pridobi_uporabnika())
 
-@bottle.route("/serije")
-def serije():
+
+@bottle.route("/serije/<stran:int>")
+def serije(stran):
     serije = Serija.pridobi_vse_serije()
-    return bottle.template('serije.html', serije=serije, uporabnisko_ime = pridobi_uporabnika())
+    return bottle.template('serije.html', serije=serije, stran=stran, uporabnisko_ime=pridobi_uporabnika())
+
 
 @bottle.post("/filmi/podrobno/<id:int>")
 def do_komentar(id):
     ocena = bottle.request.forms.getunicode("ocena")
     besedilo_komentar = bottle.request.forms.getunicode("comment")
     cas = time.time()
-    uporabnik_id = Uporabnik.pridobi_uporabnika_po_username(pridobi_uporabnika()).id
-    komentar = Komentar(None, ocena, cas, None, besedilo_komentar, uporabnik_id)
+    uporabnik_id = Uporabnik.pridobi_uporabnika_po_username(
+        pridobi_uporabnika()).id
+    komentar = Komentar(None, ocena, cas, None,
+                        besedilo_komentar, uporabnik_id)
     komentar.shrani_komentar()
-    id_komentar = Komentar.pridobi_id_komentar(uporabnik_id, besedilo_komentar, cas, ocena)
+    id_komentar = Komentar.pridobi_id_komentar(
+        uporabnik_id, besedilo_komentar, cas, ocena)
     Vsebina_Komentar(None, id, id_komentar).shrani_vsebina_komentar()
     bottle.redirect(f'/filmi/podrobno/{id}')
 
-    
 
 @bottle.get("/filmi/podrobno/<id:int>")
 def podrobno_film(id):
@@ -145,20 +163,25 @@ def podrobno_film(id):
     igralci = Vsebina.pridobi_igralce_za_vsebino(id)
     kinoteke = Vsebina.pridobi_kinoteke_za_vsebino(id)
     vneseni_komentarji = Komentar.pridobi_komentarje_za_vsebino(id)
-    return bottle.template('podrobno_film.html', film = film, komentarji_filma = komentarji_filma, reziserji = reziserji, igralci = igralci, kinoteke=kinoteke,
-                           uporabnisko_ime = pridobi_uporabnika(), vneseni_komentarji = vneseni_komentarji)
+    return bottle.template('podrobno_film.html', film=film, komentarji_filma=komentarji_filma, reziserji=reziserji, igralci=igralci, kinoteke=kinoteke,
+                           uporabnisko_ime=pridobi_uporabnika(), vneseni_komentarji=vneseni_komentarji)
+
 
 @bottle.post("/serije/podrobno/<id:int>")
 def do_komentar(id):
     ocena = bottle.request.forms.getunicode("ocena")
     besedilo_komentar = bottle.request.forms.getunicode("comment")
     cas = time.time()
-    uporabnik_id = Uporabnik.pridobi_uporabnika_po_username(pridobi_uporabnika()).id
-    komentar = Komentar(None, ocena, cas, None, besedilo_komentar, uporabnik_id)
+    uporabnik_id = Uporabnik.pridobi_uporabnika_po_username(
+        pridobi_uporabnika()).id
+    komentar = Komentar(None, ocena, cas, None,
+                        besedilo_komentar, uporabnik_id)
     komentar.shrani_komentar()
-    id_komentar = Komentar.pridobi_id_komentar(uporabnik_id, besedilo_komentar, cas, ocena)
+    id_komentar = Komentar.pridobi_id_komentar(
+        uporabnik_id, besedilo_komentar, cas, ocena)
     Vsebina_Komentar(None, id, id_komentar).shrani_vsebina_komentar()
     bottle.redirect(f'/serije/podrobno/{id}')
+
 
 @bottle.get("/serije/podrobno/<id:int>")
 def podrobno_serija(id):
@@ -168,14 +191,15 @@ def podrobno_serija(id):
     igralci = Vsebina.pridobi_igralce_za_vsebino(id)
     kinoteke = Vsebina.pridobi_kinoteke_za_vsebino(id)
     vneseni_komentarji = Komentar.pridobi_komentarje_za_vsebino(id)
-    return bottle.template('podrobno_serija.html', serija=serija, komentarji_serije = komentarji_serije, reziserji = reziserji, igralci = igralci,
-                           kinoteke = kinoteke, uporabnisko_ime = pridobi_uporabnika(), vneseni_komentarji = vneseni_komentarji)
+    return bottle.template('podrobno_serija.html', serija=serija, komentarji_serije=komentarji_serije, reziserji=reziserji, igralci=igralci,
+                           kinoteke=kinoteke, uporabnisko_ime=pridobi_uporabnika(), vneseni_komentarji=vneseni_komentarji)
+
 
 @bottle.route("/oseba/<id:int>")
 def oseba(id):
     podatki_oseba = Oseba.pridobi_oseba_po_id(id)
     vsebine_osebe = Vsebina.pridobi_vsebine_za_igralca(id)
-    return bottle.template('oseba.html', podatki_oseba = podatki_oseba, vsebine_osebe = vsebine_osebe, uporabnisko_ime = pridobi_uporabnika())
+    return bottle.template('oseba.html', podatki_oseba=podatki_oseba, vsebine_osebe=vsebine_osebe, uporabnisko_ime=pridobi_uporabnika())
 
 
 # _____________________________________
