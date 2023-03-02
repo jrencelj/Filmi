@@ -79,6 +79,23 @@ class Film(Vsebina):
                 for podatek in podatki
             ]
 
+    # __________________________________________
+    @staticmethod
+    def pridobi_zeljene_filme(predlog):
+        """Pridobi zeljene filme iz baze in jih vrne v seznama."""
+        conn = dbapi.connect("filmi.db")
+        with conn:
+            cursor = conn.execute("""
+            SELECT * FROM vsebina WHERE vsebina_tip_id = 1 and naslov like ?
+            """, ["%"+predlog+"%"])
+            podatki = list(cursor.fetchall())
+            return [
+                Vsebina(podatek[0], podatek[1], podatek[2], podatek[4],
+                        podatek[5], podatek[6], podatek[7], podatek[11])
+                for podatek in podatki
+            ]
+    # ______________________________________________
+
     @staticmethod
     def pridobi_predloge_za_film(naslov1, naslov2, naslov3):
         """Pridobi predloge za film glede na všečne filme."""

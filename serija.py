@@ -119,3 +119,20 @@ class Serija(Vsebina):
                          podatek[9], podatek[10])
             for podatek in podatki
         ]
+    
+    # _______________________________________
+    @staticmethod
+    def pridobi_zeljene_serije(predlog):
+        """Pridobi zeljene serije iz baze in jih vrne v seznama."""
+        conn = dbapi.connect("filmi.db")
+        with conn:
+            cursor = conn.execute("""
+            SELECT * FROM vsebina WHERE vsebina_tip_id = 2 and naslov like ?
+            """, ["%"+predlog+"%"])
+            podatki = list(cursor.fetchall())
+            return [
+                Vsebina(podatek[0], podatek[1], podatek[2], podatek[4],
+                        podatek[5], podatek[6], podatek[7], podatek[11])
+                for podatek in podatki
+            ]
+    # ________________________________________
