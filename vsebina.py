@@ -249,6 +249,21 @@ class Vsebina:
         ]
     
     @staticmethod
+    def pridobi_vsebine_za_igralca(id):
+        """Pridobi vsebine v katerih je nastopal dani igralec, podan z id."""
+        conn = dbapi.connect("filmi.db")
+        with conn:
+            cursor = conn.execute("""
+                SELECT DISTINCT t1.* FROM vsebina AS t1 INNER JOIN vsebina_oseba AS t2 ON t1.id = t2.vsebina_id INNER JOIN oseba AS t3 ON t2.oseba_id = t3.id
+                WHERE t3.id=?;
+            """, [id])
+            podatki = cursor.fetchall()
+        return [
+            Vsebina(podatek[0], podatek[1], podatek[2], podatek[4], podatek[5], podatek[6], podatek[7], podatek[11]) 
+            for podatek in podatki
+        ]
+    
+    @staticmethod
     def pridobi_id_za_vsebino_po_naslovu(naslov):
         conn = dbapi.connect("filmi.db")
         with conn:
@@ -273,6 +288,7 @@ class Vsebina:
                 Kinoteka(podatek[0], podatek[1], podatek[2])
                 for podatek in podatki
             ]
+        
 
 # PRIDOBIVANJE KOMENTARJEV
 if __name__ == '__main__':
