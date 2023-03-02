@@ -56,6 +56,19 @@ class Uporabnik:
             if podatek:
                 return True
         return False
+    
+    @staticmethod
+    def email_obstaja(email):
+        """Preveri ali email že obstaja."""
+        conn = dbapi.connect("filmi.db")
+        with conn:
+            cursor = conn.execute("""
+                SELECT e_naslov FROM uporabnik WHERE e_naslov=?
+            """, [email])
+            podatek = cursor.fetchone()
+            if podatek:
+                return True
+        return False
 
     @property
     def id(self):
