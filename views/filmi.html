@@ -1,22 +1,27 @@
 % rebase("osnova.html")
 <div class="bg-warning">
 
-<div class="container" style="background-color: white;">
-    <br>
-    <div class="row gy-3">
-% for film in filmi:
-        <div class="col-lg-3">
-            <div class="container">
-                <div class="card text-center">
-                    <img class="card-img-bottom rounded img-fluid" src="{{ film.url_slika }}">
-                    <div class="card-body">
-                        <a class="card-title text-center" href="/filmi/podrobno/{{ film.id }}" style="text-decoration: none;">{{ film.naslov }}</a>
-                        <p style="font-style: italic;">{{ film.leto_izida }}</p>
+    <div class="container" style="background-color: white;">
+        <br>
+        <div class="row gy-3">
+            % for film in filmi[max(0,12*stran-12):min(12*stran,len(filmi))]:
+            <div class="col-lg-3">
+                <div class="container">
+                    <div class="card text-center">
+                        <img class="card-img-bottom rounded img-fluid" src="{{ film.url_slika }}">
+                        <div class="card-body">
+                            <a class="card-title text-center" href="/filmi/podrobno/{{ film.id }}"
+                                style="text-decoration: none;">{{ film.naslov }}</a>
+                            <p style="font-style: italic;">{{ film.leto_izida }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
+            % end
+            <a href="/filmi/{{ max(stran - 1,1) }}" class="RightLink">&laquo;
+                Previous</a>
+            <a href="/filmi/{{ min(stran + 1,len(filmi)//12 if len(filmi)%12 == 0 else len(filmi)//12 +1) }}"
+                class="next">Next &raquo;</a>
         </div>
-% end
     </div>
-</div>
 </div>

@@ -1,26 +1,27 @@
 % rebase("osnova.html")
 <div class="bg-warning">
 
-<div class="container" style="background-color: white;">
-    <br>
-    <div class="row gy-3">
-% for serija in serije:
-        <div class="col-lg-3">
-            <div class="container">
-                <div class="card text-center">
-                    <img class="card-img-bottom rounded img-fluid" src="{{ serija.url_slika }}">
-                    <div class="card-body">
-                        <a class="card-title text-center" href="/serije/podrobno/{{ serija.id }}" style="text-decoration: none;">{{ serija.naslov }}</a>
-                        <p style="font-style: italic;">{{ serija.leto_izida }}</p>
+    <div class="container" style="background-color: white;">
+        <br>
+        <div class="row gy-3">
+            % for serija in serije[max(0,12*stran-12):min(12*stran,len(serije))]:
+            <div class="col-lg-3">
+                <div class="container">
+                    <div class="card text-center">
+                        <img class="card-img-bottom rounded img-fluid" src="{{ serija.url_slika }}">
+                        <div class="card-body">
+                            <a class="card-title text-center" href="/serije/podrobno/{{ serija.id }}"
+                                style="text-decoration: none;">{{ serija.naslov }}</a>
+                            <p style="font-style: italic;">{{ serija.leto_izida }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
+            % end
+            <a href="/serije/{{ max(stran - 1,1) }}" class="RightLink">&laquo;
+                Previous</a>
+            <a href="/serije/{{ min(stran + 1,len(serije)//12 if len(serije)%12 == 0 else len(serije)//12 +1) }}"
+                class="next">Next &raquo;</a>
         </div>
-% end
     </div>
 </div>
-</div>
-
-
-
-

@@ -1,152 +1,166 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-        <!--<link rel="stylesheet" type="text/css" href="/style.css">-->
-    </head>
-    <body>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="height:7vh;">
-            <div class="container-fluid">
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse d-lg-flex" id="navbarNavDropdown">
-                <a class="navbar-brand col-lg-1 me-0" href="/">MovieMania</a>
-                <ul class="navbar-nav col-lg-9 justify-content-lg-start">
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/filmi">Movies</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/serije">TV Shows</a>
-                  </li>
-                  <!-- _____________________________________ -->
-                  <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdownMenuLink" role="button"
-                      data-bs-toggle="dropdown" aria-expanded="false">
-                      Search
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                      <li><a class="dropdown-item" href="/iskanje_filmi/1/main">Movie</a></li>
-                      <li><a class="dropdown-item" href="/iskanje_serije/1/main">TV Show</a></li>
-                    </ul>
-                  </li>
-                  <!-- _____________________________________ -->
-                  % if uporabnisko_ime:
-                  <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Recommend
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                      <li><a class="dropdown-item" href="/generator_film">Movie</a></li>
-                      <li><a class="dropdown-item" href="/generator_serija">TV Show</a></li>
-                    </ul>
-                  </li>
-                  % end
-                  % if not uporabnisko_ime:
-                  <li class="nav-item">
-                    <a class="nav-link" role="button" aria-current="page" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-title="Log in required" data-bs-content="To continue to this site please log in first.">Recommend</a>
-                  </li>
-                  % end
-                </ul>
-                
-                <div class="d-lg-flex col-lg-2 justify-content-end gap-2">
-                  % if not uporabnisko_ime:
-                  <button type="button" class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#login">Log in</button>
-                  % end
-                  % if uporabnisko_ime:
-                  <a role="button" class="btn btn-outline-light" href="/odjava">Log out</a>
-                  % end
-                  % if not uporabnisko_ime:
-                  <button type="button" class="btn btn-warning me-md-2" data-bs-toggle="modal" data-bs-target="#register">Sign up</button> 
-                  % end
-                </div>
-              </div>
-            </div>
-          </nav>
-          
-          <div class="modal fade" id="register" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-              <div class="modal-content">
-                <div class="modal-header bg-warning">
-                  <h1>Sign up</h1>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <form method="POST" action="do_registracija">
-                    <div class="form-floating">
-                      <input type="email" name="email" id="email" class="form-control" placeholder="Email">
-                      <label for="email">Email</label>
-                    </div>
-                    <br>
-                    <div class="form-floating">
-                        <input type="text" id="username" name="username" class="form-control" placeholder="Username">
-                        <label for="username">Username</label>
-                    </div>
-                    <br>
-                    <div class="form-floating">
-                        <input type="password" id="pass1" name="pass1" class="form-control" placeholder="Password">
-                        <label for="pass1">Password</label>
-                    </div>
-                    <br>
-                    <div class="form-floating">
-                        <input type="password" id="pass2" name="pass2" class="form-control" placeholder="Repeat password">
-                        <label for="pass2">Repeat password</label>
-                    </div>
-                    <br>
-                    <div class="form-floating">
-                      <input type="date" id="bday" name="bday" class="form-control" placeholder="Date of birth">
-                      <label for="bday">Date of birth</label>
-                    </div>
-                    <br>
-                    <div class="col-md-12 text-center">
-                      <button type="submit" class="btn btn-warning">Sign up</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <div class="modal fade" id="login" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-              <div class="modal-content">
-                <div class="modal-header bg-dark">
-                  <h1 style="color: white;">Log in</h1>
-                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <form method="POST" action="/do_prijava">
-                    <div class="form-floating">
-                      <input type="text" name="username" id="username" class="form-control" placeholder="Username">
-                      <label for="username">Username</label>
-                    </div>
-                    <br>
-                    <div class="form-floating">
-                        <input type="password" id="pass" name="pass" class="form-control" placeholder="Password">
-                        <label for="pass">Password</label>
-                    </div>
-                    <br>
-                    <div class="col-md-12 text-center">
-                      <button type="submit" class="btn btn-warning" onclick="window.location.reload()">Log in</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-       <!-- <div class = "container"> -->
-            {{ !base }}
-        <!-- </div> -->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <!--<link rel="stylesheet" type="text/css" href="/style.css">-->
+</head>
 
-      <script>
-        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-        return new bootstrap.Popover(popoverTriggerEl)
-        })
-      </script>
-    </body>
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="height:7vh;">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse d-lg-flex" id="navbarNavDropdown">
+        <a class="navbar-brand col-lg-1 me-0" href="/">MovieMania</a>
+        <ul class="navbar-nav col-lg-9 justify-content-lg-start">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/filmi/1">Movies</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/serije/1">TV Shows</a>
+          </li>
+          <!-- _____________________________________ -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdownMenuLink" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Search
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" href="/iskanje_filmi/1/main">Movie</a></li>
+              <li><a class="dropdown-item" href="/iskanje_serije/1/main">TV Show</a></li>
+            </ul>
+          </li>
+          <!-- _____________________________________ -->
+          % if uporabnisko_ime:
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdownMenuLink" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Recommend
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" href="/generator_film">Movie</a></li>
+              <li><a class="dropdown-item" href="/generator_serija">TV Show</a></li>
+            </ul>
+          </li>
+          % end
+          % if not uporabnisko_ime:
+          <li class="nav-item">
+            <a class="nav-link" role="button" aria-current="page" data-bs-toggle="popover" data-bs-placement="bottom"
+              data-bs-title="Log in required"
+              data-bs-content="To continue to this site please log in first.">Recommend</a>
+          </li>
+          % end
+        </ul>
+
+        <div class="d-lg-flex col-lg-2 justify-content-end gap-2">
+          % if not uporabnisko_ime:
+          <button type="button" class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#login">Log
+            in</button>
+          % end
+          % if uporabnisko_ime:
+          <a role="button" class="btn btn-outline-light" href="/odjava">Log out</a>
+          % end
+          % if not uporabnisko_ime:
+          <button type="button" class="btn btn-warning me-md-2" data-bs-toggle="modal" data-bs-target="#register">Sign
+            up</button>
+          % end
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="modal fade" id="register" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-warning">
+          <h1>Sign up</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form method="POST" action="do_registracija">
+            <div class="form-floating">
+              <input type="email" name="email" id="email" class="form-control" placeholder="Email">
+              <label for="email">Email</label>
+            </div>
+            <br>
+            <div class="form-floating">
+              <input type="text" id="username" name="username" class="form-control" placeholder="Username">
+              <label for="username">Username</label>
+            </div>
+            <br>
+            <div class="form-floating">
+              <input type="password" id="pass1" name="pass1" class="form-control" placeholder="Password">
+              <label for="pass1">Password</label>
+            </div>
+            <br>
+            <div class="form-floating">
+              <input type="password" id="pass2" name="pass2" class="form-control" placeholder="Repeat password">
+              <label for="pass2">Repeat password</label>
+            </div>
+            <br>
+            <div class="form-floating">
+              <input type="date" id="bday" name="bday" class="form-control" placeholder="Date of birth">
+              <label for="bday">Date of birth</label>
+            </div>
+            <br>
+            <div class="col-md-12 text-center">
+              <button type="submit" class="btn btn-warning">Sign up</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="login" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-dark">
+          <h1 style="color: white;">Log in</h1>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form method="POST" action="/do_prijava">
+            <div class="form-floating">
+              <input type="text" name="username" id="username" class="form-control" placeholder="Username">
+              <label for="username">Username</label>
+            </div>
+            <br>
+            <div class="form-floating">
+              <input type="password" id="pass" name="pass" class="form-control" placeholder="Password">
+              <label for="pass">Password</label>
+            </div>
+            <br>
+            <div class="col-md-12 text-center">
+              <button type="submit" class="btn btn-warning" onclick="window.location.reload()">Log in</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class = "container"> -->
+  {{ !base }}
+  <!-- </div> -->
+
+  <script>
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+      return new bootstrap.Popover(popoverTriggerEl)
+    })
+  </script>
+</body>
+
 </html>
