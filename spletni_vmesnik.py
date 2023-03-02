@@ -177,4 +177,45 @@ def oseba(id):
     vsebine_osebe = Vsebina.pridobi_vsebine_za_igralca(id)
     return bottle.template('oseba.html', podatki_oseba = podatki_oseba, vsebine_osebe = vsebine_osebe, uporabnisko_ime = pridobi_uporabnika())
 
+
+# _____________________________________
+@bottle.route("/iskanje_filmi/<stran:int>/<niz>")
+def iskanje_filmi(stran, niz="main"):
+    filmi = Film.pridobi_vse_filme()
+    print(niz)
+    if niz == 'main' or niz == "":
+        najdeni = Film.pridobi_vse_filme()
+    else:
+        najdeni = Film.pridobi_zeljene_filme(niz)
+    return bottle.template('iskanje_filmi.html', filmi=filmi, najdeni=najdeni, stran=stran, niz=niz, uporabnisko_ime=pridobi_uporabnika())
+
+
+@bottle.post("/iskanje_filmi/<stran:int>")
+def iskanje_filmi2(stran):
+    filmi = Film.pridobi_vse_filme()
+    niz = bottle.request.forms.getunicode('iskani_filmi')
+    najdeni = Film.pridobi_zeljene_filme(niz)
+    return bottle.template('iskanje_filmi.html', filmi=filmi, najdeni=najdeni, stran=stran, niz=niz, uporabnisko_ime=pridobi_uporabnika())
+
+
+@bottle.route("/iskanje_serije/<stran:int>/<niz>")
+def iskanje_serije(stran, niz="main"):
+    serije = Serija.pridobi_vse_serije()
+    if niz == 'main' or niz == "":
+        najdene = Serija.pridobi_vse_serije()
+    else:
+        najdene = Serija.pridobi_zeljene_serije(niz)
+    return bottle.template('iskanje_serije.html', serije=serije, najdene=najdene, stran=stran, niz=niz, uporabnisko_ime=pridobi_uporabnika())
+
+
+@bottle.post("/iskanje_serije/<stran:int>")
+def iskanje_serije2(stran):
+    serije = Serija.pridobi_vse_serije()
+    niz = bottle.request.forms.getunicode('iskane_serije')
+    najdene = Serija.pridobi_zeljene_serije(niz)
+    return bottle.template('iskanje_serije.html', serije=serije, najdene=najdene, stran=stran, niz=niz, uporabnisko_ime=pridobi_uporabnika())
+
+# _____________________________________
+
+
 bottle.run(debug=True, reloader=True)
