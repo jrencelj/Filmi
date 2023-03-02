@@ -1,0 +1,58 @@
+% rebase("osnova.html")
+<div class="bg-warning">
+
+    <div class="container" style="background-color: white;">
+        <br>
+        <div class="row justify-content-md-center text-center">
+            <div class="col-8">
+                <h1>Write TV Show title or part of TV Show title</h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <form action="/iskanje_serije/1" method="POST">
+                    <div class="row justify-content-md-center text-center">
+                        <div class="col-6">
+                            <input class="form-control shadow-none" list="serije" id="iskane_serije"
+                                name="iskane_serije" placeholder="Search">
+                            <datalist id="serije">
+                                % for serija in serije:
+                                <option value="{{ serija.naslov }}">
+                                    % end
+                            </datalist>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row justify-content-md-center text-center">
+                        <div class="col-1">
+                            <button class="btn btn-warning" id="najdi_serije" type="submit">Find</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <br>
+
+
+        <div class="row gy-3">
+            % for serija in najdene[max(0,12*stran-12):min(12*stran,len(najdene))]:
+            <div class="col-lg-3">
+                <div class="container">
+                    <div class="card text-center">
+                        <img class="card-img-bottom rounded img-fluid" src="{{ serija.url_slika }}">
+                        <div class="card-body">
+                            <a class="card-title text-center" href="/serije/{{ serija.id }}"
+                                style="text-decoration: none;">{{ serija.naslov }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            % end
+            <a href="/iskanje_serije/{{ max(stran - 1,1) }}/{{niz if niz != '' else 'main'}}" class="previous">&laquo;
+                Previous</a>
+            <a href="/iskanje_serije/{{ min(stran + 1,len(najdene)//12 if len(najdene)%12 == 0 else len(najdene)//12 +1) }}/{{niz if niz != '' else 'main'}}"
+                class="next">Next &raquo;</a>
+        </div>
+    </div>
+</div>

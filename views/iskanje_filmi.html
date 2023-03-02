@@ -1,0 +1,58 @@
+% rebase("osnova.html")
+<div class="bg-warning">
+
+    <div class="container" style="background-color: white;">
+        <br>
+        <div class="row justify-content-md-center text-center">
+            <div class="col-8">
+                <h1>Write movie title or part of movie title</h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <form action="/iskanje_filmi/1" method="POST">
+                    <div class="row justify-content-md-center text-center">
+                        <div class="col-6">
+                            <input class="form-control shadow-none" list="filmi" id="iskani_filmi" name="iskani_filmi"
+                                placeholder="Search">
+                            <datalist id="filmi">
+                                % for film in filmi:
+                                <option value="{{ film.naslov }}">
+                                    % end
+                            </datalist>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row justify-content-md-center text-center">
+                        <div class="col-1">
+                            <button class="btn btn-warning" id="najdi_filme" type="submit">Find</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <br>
+
+
+        <div class="row gy-3">
+            % for film in najdeni[max(0,12*stran-12):min(12*stran,len(najdeni))]:
+            <div class="col-lg-3">
+                <div class="container">
+                    <div class="card text-center">
+                        <img class="card-img-bottom rounded img-fluid" src="{{ film.url_slika }}">
+                        <div class="card-body">
+                            <a class="card-title text-center" href="/filmi/{{ film.id }}"
+                                style="text-decoration: none;">{{ film.naslov }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            % end
+            <a href="/iskanje_filmi/{{ max(stran - 1,1) }}/{{niz if niz != '' else 'main'}}" class="RightLink">&laquo;
+                Previous</a>
+            <a href="/iskanje_filmi/{{ min(stran + 1,len(najdeni)//12 if len(najdeni)%12 == 0 else len(najdeni)//12 +1) }}/{{niz if niz != '' else 'main'}}"
+                class="next">Next &raquo;</a>
+        </div>
+    </div>
+</div>
