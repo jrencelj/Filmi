@@ -18,10 +18,18 @@
                 </div>
             </div>
             % end
-            <a href="/serije/{{ max(stran - 1,1) }}" class="RightLink">&laquo;
+            <div>
+                <br>
+                <a class="btn btn-warning" href="/serije/{{ max(stran - 1,1) }}" role="button">Previous</a>
+                <a class="btn btn-warning float-end"
+                    href="/serije/{{ min(stran + 1,len(serije)//12 if len(serije)%12 == 0 else len(serije)//12 +1) }}"
+                    role="button">Next</a>
+            </div>
+            <!-- <a href="/serije/{{ max(stran - 1,1) }}" class="RightLink">&laquo;
                 Previous</a>
             <a href="/serije/{{ min(stran + 1,len(serije)//12 if len(serije)%12 == 0 else len(serije)//12 +1) }}"
-                class="next">Next &raquo;</a>
+                class="next">Next &raquo;</a> -->
         </div>
+        <br>
     </div>
 </div>

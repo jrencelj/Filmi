@@ -49,10 +49,22 @@
                 </div>
             </div>
             % end
-            <a href="/iskanje_serije/{{ max(stran - 1,1) }}/{{niz if niz != '' else 'main'}}" class="previous">&laquo;
+            <div>
+                <br>
+                <a class="btn btn-warning"
+                    href="/iskanje_serije/{{ max(stran - 1,1) }}/{{niz if niz != '' else 'main'}}"
+                    role="button">Previous</a>
+                <!-- <a href="/filmi/{{ max(stran - 1,1) }}">&laquo;
+                    Previous</a> -->
+                <a class="btn btn-warning float-end"
+                    href="/iskanje_serije/{{ min(stran + 1,len(najdene)//12 if len(najdene)%12 == 0 else len(najdene)//12 +1) }}/{{niz if niz != '' else 'main'}}"
+                    role="button">Next</a>
+            </div>
+            <!-- <a href="/iskanje_serije/{{ max(stran - 1,1) }}/{{niz if niz != '' else 'main'}}" class="previous">&laquo;
                 Previous</a>
             <a href="/iskanje_serije/{{ min(stran + 1,len(najdene)//12 if len(najdene)%12 == 0 else len(najdene)//12 +1) }}/{{niz if niz != '' else 'main'}}"
-                class="next">Next &raquo;</a>
+                class="next">Next &raquo;</a> -->
         </div>
+        <br>
     </div>
 </div>
